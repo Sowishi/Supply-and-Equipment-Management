@@ -23,7 +23,6 @@ const ViewTransaction = () => {
     getTransaction();
   }, []);
 
-  console.log(user);
   return (
     <div className="w-full h-screen bg-slate-950 overflow-scroll">
       {user && transaction && (
@@ -94,10 +93,17 @@ const ViewTransaction = () => {
                   <Table.Body className="divide-y">
                     <Table.Row>
                       <Table.Cell className="bg-slate-800  text-white">
-                        {transaction.reviewBy}
+                        {transaction.reviewBy
+                          ? transaction.reviewBy
+                          : "Waiting for Approval"}
                       </Table.Cell>
+
                       <Table.Cell className="bg-slate-800  text-white">
-                        {moment(transaction.reviewDate.toDate()).format("LLL")}
+                        {transaction.reviewDate
+                          ? moment(transaction.reviewDate.toDate()).format(
+                              "LLL"
+                            )
+                          : "No Date"}
                       </Table.Cell>
                       <Table.Cell className="bg-slate-800  text-white">
                         {transaction.status}
