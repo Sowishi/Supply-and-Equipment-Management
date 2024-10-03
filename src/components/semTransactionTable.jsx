@@ -4,6 +4,9 @@ import useGetSupply from "../hooks/useGetSupply";
 import useGetEquipment from "../hooks/useGetEquipment";
 import { useSemStore } from "../zustand/store";
 import useUpdateTransaction from "../hooks/useUpdateTransaction";
+import QRCode from "react-qr-code";
+import SemModal from "./semModal";
+import { useState } from "react";
 
 const SemTransactionTable = ({
   data,
@@ -17,6 +20,8 @@ const SemTransactionTable = ({
   const { currentUser } = useSemStore();
   const { approveTransaction, rejectTransaction } = useUpdateTransaction();
   const isAdmin = currentUser?.role == "Admin";
+
+  const [qrModal, setQrModal] = useState(false);
 
   const handleGetSupply = (id) => {
     const output = supply.filter((item) => {
@@ -48,10 +53,21 @@ const SemTransactionTable = ({
     }
   };
 
-  console.log(data);
-
   return (
     <div className="overflow-x-auto">
+      <SemModal
+        title={"QR Code for Equipment"}
+        open={qrModal}
+        handleClose={() => setQrModal(false)}
+      >
+        <QRCode
+          size={256}
+          style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+          value={"fd"}
+          viewBox={`0 0 256 256`}
+        />
+      </SemModal>
+
       {data && (
         <Table>
           <Table.Head>
@@ -73,6 +89,7 @@ const SemTransactionTable = ({
             <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
               Status
             </Table.HeadCell>
+
             <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
               Form
             </Table.HeadCell>
@@ -169,24 +186,32 @@ const SemTransactionTable = ({
                         )}
 
                         {item.category == "Equipment" && (
-                          <Dropdown.Item
-                            style={{
-                              cursor:
-                                item.status !== "Approve"
-                                  ? "not-allowed"
-                                  : "pointer",
-                            }}
-                            disabled={item.status !== "Approve"}
-                            onClick={() => {
-                              setCurrentTransaction(item);
-                              setParForm(true);
-                            }}
-                          >
-                            {" "}
-                            View PAR Form
-                          </Dropdown.Item>
+                          <>
+                            <Dropdown.Item
+                              style={{
+                                cursor:
+                                  item.status !== "Approve"
+                                    ? "not-allowed"
+                                    : "pointer",
+                              }}
+                              disabled={item.status !== "Approve"}
+                              onClick={() => {
+                                setCurrentTransaction(item);
+                                setParForm(true);
+                              }}
+                            >
+                              View PAR Form
+                            </Dropdown.Item>
+                          </>
                         )}
                       </Tooltip>
+                      {item.category == "Equipment" && (
+                        <>
+                          <Dropdown.Item onClick={() => setQrModal(true)}>
+                            View QR Code
+                          </Dropdown.Item>
+                        </>
+                      )}
                     </Dropdown>
                   </Table.Cell>
                   {isAdmin && (

@@ -24,6 +24,7 @@ const DashboardHeader = ({ handleOpenSidebar, setCartModal }) => {
             {currentUser?.firstName} {currentUser?.lastName} -{" "}
             <span className="font-bold">{currentUser?.role}</span>{" "}
           </h1>
+          <p className="text-blue-300 font-bold mt-1">{currentUser?.office}</p>
         </div>
         {isAdmin ? (
           <Tooltip content={`Email used: ${currentUser?.email}`}>
