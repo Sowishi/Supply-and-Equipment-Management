@@ -65,7 +65,7 @@ const SemTransactionTable = ({
         <QRCode
           size={256}
           style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-          value={`http://localhost:5173/view-transaction/${selected}`}
+          value={`https://supply-and-equipment-8df9f.web.app/view-transaction/${selected}`}
           viewBox={`0 0 256 256`}
         />
       </SemModal>

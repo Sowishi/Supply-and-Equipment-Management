@@ -65,8 +65,8 @@ const Login = () => {
       }}
     >
       {loading && <ScreenLoading />}
-      <div className="flex justify-center items-center w-3/6">
-        <div className="content bg-slate-800 min-h-5/6 w-4/6 rounded-lg">
+      <div className="flex justify-center items-center w-full lg:w-3/6">
+        <div className="content bg-slate-800 min-h-5/6 mx-5 w-full lg:w-4/6 rounded-lg">
           <div className="title-wrapper m-10">
             <SemTitle
               color={"white"}
