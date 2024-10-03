@@ -23,6 +23,8 @@ const SemTransactionTable = ({
 
   const [qrModal, setQrModal] = useState(false);
 
+  const [selected, setSelected] = useState();
+
   const handleGetSupply = (id) => {
     const output = supply.filter((item) => {
       if (item.id == id) {
@@ -63,7 +65,7 @@ const SemTransactionTable = ({
         <QRCode
           size={256}
           style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-          value={"fd"}
+          value={`http://localhost:5173/view-transaction/${selected}`}
           viewBox={`0 0 256 256`}
         />
       </SemModal>
@@ -207,7 +209,12 @@ const SemTransactionTable = ({
                       </Tooltip>
                       {item.category == "Equipment" && (
                         <>
-                          <Dropdown.Item onClick={() => setQrModal(true)}>
+                          <Dropdown.Item
+                            onClick={() => {
+                              setSelected(item.id);
+                              setQrModal(true);
+                            }}
+                          >
                             View QR Code
                           </Dropdown.Item>
                         </>
