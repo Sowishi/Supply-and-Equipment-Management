@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useSemStore } from "./zustand/store";
 import Transaction from "./pages/transcation";
 import MasterRecords from "./pages/masterRecords";
+import ViewTransaction from "./pages/view-transaction";
 
 function App() {
   const { currentUser } = useSemStore();
@@ -23,6 +24,8 @@ function App() {
           path="/transaction"
           element={currentUser ? <Transaction /> : <Login />}
         />
+
+        <Route path="/view-transaction/:id" element={<ViewTransaction />} />
       </Routes>
       <ToastContainer />
     </>
