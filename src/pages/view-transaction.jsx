@@ -5,6 +5,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { Table } from "flowbite-react";
 import moment from "moment";
+import logo from "../assets/CN-removebg-preview.png";
 
 const ViewTransaction = () => {
   const { id } = useParams();
@@ -24,133 +25,81 @@ const ViewTransaction = () => {
   }, []);
 
   return (
-    <div className="w-full h-screen bg-slate-950 overflow-scroll">
+    <div className="w-full h-screen bg-white overflow-scroll">
       {user && transaction && (
-        <>
-          <div className="container mx-auto py-10 px-10">
-            <h1 className="text-3xl text-white font-bold">
-              Transaction Details
+        <div className="container mx-auto h-screen">
+          <div
+            className="header flex items-center justify-start p-5"
+            style={{ background: "#835863" }}
+          >
+            <img width={80} src={logo} alt="" />
+            <h1 className="text-4xl ml-5 font-bold text-white">
+              CNSC Property
             </h1>
-            <div className="flex flex-wrap">
-              <div className="basis-full my-10">
-                <h1 className="text-white font-bold text-2xl mb-1">Borrower</h1>
-                <Table>
-                  <Table.Head>
-                    <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
-                      Full Name
-                    </Table.HeadCell>
-                    <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
-                      Office Name
-                    </Table.HeadCell>
-                    <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
-                      Contact
-                    </Table.HeadCell>
-                    <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
-                      Email
-                    </Table.HeadCell>
-                    <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
-                      Role
-                    </Table.HeadCell>
-                  </Table.Head>
-                  <Table.Body className="divide-y">
-                    <Table.Row>
-                      <Table.Cell className="bg-slate-800  text-white">
-                        {user.firstName + " " + user.lastName}
-                      </Table.Cell>
-                      <Table.Cell className="bg-slate-800  text-white">
-                        {user.office}
-                      </Table.Cell>
-                      <Table.Cell className="bg-slate-800  text-white">
-                        {user.contact}
-                      </Table.Cell>
-                      <Table.Cell className="bg-slate-800  text-white">
-                        {user.email}
-                      </Table.Cell>
-                      <Table.Cell className="bg-slate-800  text-white">
-                        {user.role}
-                      </Table.Cell>
-                    </Table.Row>
-                  </Table.Body>
-                </Table>
-              </div>
-
-              <div className="basis-full my-10">
-                <h1 className="text-white font-bold text-2xl mb-1">
-                  Approve By
+          </div>
+          <div className="content mt-10 p-5">
+            <div className="card flex my-2">
+              <div className="basis-5/12">
+                <h1 className="text-lg text-red-500 font-bold">
+                  Classification
                 </h1>
-                <Table>
-                  <Table.Head>
-                    <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
-                      Full Name
-                    </Table.HeadCell>
-                    <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
-                      Date Review
-                    </Table.HeadCell>
-                    <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
-                      Stattus
-                    </Table.HeadCell>
-                  </Table.Head>
-                  <Table.Body className="divide-y">
-                    <Table.Row>
-                      <Table.Cell className="bg-slate-800  text-white">
-                        {transaction.reviewBy
-                          ? transaction.reviewBy
-                          : "Waiting for Approval"}
-                      </Table.Cell>
-
-                      <Table.Cell className="bg-slate-800  text-white">
-                        {transaction.reviewDate
-                          ? moment(transaction.reviewDate.toDate()).format(
-                              "LLL"
-                            )
-                          : "No Date"}
-                      </Table.Cell>
-                      <Table.Cell className="bg-slate-800  text-white">
-                        {transaction.status}
-                      </Table.Cell>
-                    </Table.Row>
-                  </Table.Body>
-                </Table>
               </div>
-
-              <div className="basis-full my-10">
-                <h1 className="text-white font-bold text-2xl mb-1">
-                  Equipment
+              <div className="basis-7/12 border-b-2 border-red-500">
+                <h1 className="text-lg text-black">
+                  {transaction.item[0].name}
                 </h1>
-                <Table>
-                  <Table.Head>
-                    <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
-                      Name
-                    </Table.HeadCell>
-                    <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
-                      Description
-                    </Table.HeadCell>
-                    <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
-                      Property Number
-                    </Table.HeadCell>
-                  </Table.Head>
-                  <Table.Body className="divide-y">
-                    {transaction.item.map((item) => {
-                      return (
-                        <Table.Row key={item.id}>
-                          <Table.Cell className="bg-slate-800  text-white">
-                            {item.name}
-                          </Table.Cell>
-                          <Table.Cell className="bg-slate-800  text-white">
-                            {item.description}
-                          </Table.Cell>
-                          <Table.Cell className="bg-slate-800  text-white">
-                            {item.propertyNumber}
-                          </Table.Cell>
-                        </Table.Row>
-                      );
-                    })}
-                  </Table.Body>
-                </Table>
+              </div>
+            </div>
+            <div className="card flex my-2">
+              <div className="basis-5/12">
+                <h1 className="text-lg text-red-500 font-bold">
+                  Property Number
+                </h1>
+              </div>
+              <div className="basis-7/12 border-b-2 border-red-500">
+                <h1 className="text-lg text-black">
+                  {" "}
+                  {transaction.item[0].propertyNumber}
+                </h1>
+              </div>
+            </div>
+            <div className="card flex my-2">
+              <div className="basis-5/12">
+                <h1 className="text-lg text-red-500 font-bold">
+                  End User/Location
+                </h1>
+              </div>
+              <div className="basis-7/12 border-b-2 border-red-500">
+                <h1 className="text-lg text-black font-bold">
+                  {user.address + " -- "}
+                </h1>
+                <h1 className="text-lg text-black">
+                  {user.firstName + " " + user.lastName}
+                </h1>
+              </div>
+            </div>
+            <div className="card flex my-2">
+              <div className="basis-5/12">
+                <h1 className="text-lg text-red-500 font-bold">
+                  Date Accquired
+                </h1>
+              </div>
+              <div className="basis-7/12 border-b-2 border-red-500">
+                <h1 className="text-lg text-black">
+                  {moment(transaction.createdAt.toDate()).format("LLL")}
+                </h1>
+              </div>
+            </div>
+            <div className="card flex my-2">
+              <div className="basis-5/12">
+                <h1 className="text-lg text-red-500 font-bold">Supplier</h1>
+              </div>
+              <div className="basis-7/12 border-b-2 border-red-500">
+                <h1 className="text-lg text-black">Admin</h1>
               </div>
             </div>
           </div>
-        </>
+        </div>
       )}
     </div>
   );
