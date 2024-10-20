@@ -13,6 +13,8 @@ import NoData from "../components/noData";
 import { SUPPLY_DEFAULT_VALUE } from "../utils/constant";
 import { useSemStore } from "../zustand/store";
 import AddSupplyModal from "../components/addSupplyModal";
+import RisFormModal from "../components/risFormModal";
+import PurchaseOrderModal from "../components/purchaseOrderModal";
 
 const Supply = ({ cart }) => {
   //State
@@ -95,6 +97,8 @@ const Supply = ({ cart }) => {
         event={handleDeleteSupply}
         handleClose={() => setDeleteModal(false)}
       />
+
+      <PurchaseOrderModal title={`RIS Form`} size={"6xl"} open={true} />
 
       <div className="wrapper p-0 lg:p-5">
         <ContentHeader
