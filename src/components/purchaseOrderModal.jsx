@@ -91,6 +91,23 @@ const PurchaseOrderModal = ({
             <h1>Quantity</h1>
           </div>
         </div>
+
+        <div className="border border-slate-950 flex border-t-0">
+          <div className="basis-2/12 border border-slate-950 p-2 text-center">
+            <h1 className={`${false ? "opacity-0" : ""}`}>1 </h1>
+          </div>
+          <div className="basis-6/12 border border-slate-950 p-2 text-center">
+            <h1 className={`${false ? "opacity-0" : ""}`}>Battery AAA</h1>
+          </div>
+          <div className="basis-2/12 border border-slate-950 p-2 text-center">
+            <h1 className={`${false ? "opacity-0" : ""}`}>Pcs</h1>
+          </div>
+
+          <div className="basis-2/12 border border-slate-950 p-2 text-center">
+            <h1 className={`${false ? "opacity-0" : ""}`}>3</h1>
+          </div>
+        </div>
+
         {data?.map((item) => {
           return (
             <RisFormRow
@@ -107,12 +124,12 @@ const PurchaseOrderModal = ({
         })}
 
         <PurchaseOrderRowDummy />
-        <div className="border border-slate-950 p-10 text-center">
+        {/* <div className="border border-slate-950 p-10 text-center">
           <h1>
             Purpose: Other supplies and materials to be used for Survey,
             Research, Exploration and Development expenses.{" "}
           </h1>
-        </div>
+        </div> */}
       </div>
       {viewOnly && currentMode == "Supply" && (
         <div className="flex">

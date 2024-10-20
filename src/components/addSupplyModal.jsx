@@ -74,6 +74,14 @@ const AddSupplyModal = ({
             placeholder="Enter inventory number"
             event={handleUpdateForm}
           />
+          <SemInput
+            value={forms.supplier}
+            name={"supplier"}
+            color={"gray"}
+            label="Supplier"
+            placeholder="Enter Supplier"
+            event={handleUpdateForm}
+          />
         </div>{" "}
       </div>
 

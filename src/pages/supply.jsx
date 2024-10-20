@@ -25,6 +25,7 @@ const Supply = ({ cart }) => {
   const [isUpdate, setIsUpdate] = useState(false);
   const [forms, setForms] = useState(SUPPLY_DEFAULT_VALUE);
   const [search, setSearch] = useState("");
+  const [poModal, setPoModal] = useState(false);
 
   // Hooks
 
@@ -44,7 +45,8 @@ const Supply = ({ cart }) => {
 
   const handleSubmit = () => {
     if (!isUpdate) {
-      addSupply(forms);
+      // addSupply(forms);
+      setPoModal(true);
       setSupplyModal(false);
       toast.success("Supply added successfully.");
     } else {
@@ -98,7 +100,12 @@ const Supply = ({ cart }) => {
         handleClose={() => setDeleteModal(false)}
       />
 
-      <PurchaseOrderModal title={`RIS Form`} size={"6xl"} open={true} />
+      <PurchaseOrderModal
+        handleClose={() => setPoModal(false)}
+        title={`Purchase Order Form`}
+        size={"6xl"}
+        open={poModal}
+      />
 
       <div className="wrapper p-0 lg:p-5">
         <ContentHeader

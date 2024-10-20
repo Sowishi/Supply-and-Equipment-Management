@@ -1,10 +1,16 @@
 import { Tabs } from "flowbite-react";
 import DashboardLayout from "../layout/dashboardLayout";
-import { HiOfficeBuilding, HiOutlineTable, HiViewGrid } from "react-icons/hi";
+import {
+  HiAnnotation,
+  HiOfficeBuilding,
+  HiOutlineTable,
+  HiViewGrid,
+} from "react-icons/hi";
 import Offices from "./offices";
 import Supply from "./supply";
 import Equipment from "./equipment";
 import { useSemStore } from "../zustand/store";
+import { HiMagnifyingGlass } from "react-icons/hi2";
 
 const MasterRecords = () => {
   const { currentUser } = useSemStore();
@@ -38,6 +44,12 @@ const MasterRecords = () => {
               <Equipment />
             </Tabs.Item>
             <Tabs.Item title="Office" icon={HiOfficeBuilding}>
+              <Offices />
+            </Tabs.Item>
+            <Tabs.Item title="Purchase Order" icon={HiAnnotation}>
+              <Offices />
+            </Tabs.Item>
+            <Tabs.Item title="Inspection" icon={HiMagnifyingGlass}>
               <Offices />
             </Tabs.Item>
           </Tabs>

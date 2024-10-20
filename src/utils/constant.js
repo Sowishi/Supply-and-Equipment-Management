@@ -8,6 +8,7 @@ export const SUPPLY_DEFAULT_VALUE = {
   description: "",
   estimatedUsefulLife: "",
   inventoryNumber: "",
+  supplier: "",
 };
 
 export const EQUIPMENT_DEFAULT_VALUE = {
