@@ -1,4 +1,4 @@
-import { HiOutlineTable } from "react-icons/hi";
+import { HiOutlineTable, HiPlus } from "react-icons/hi";
 import ContentHeader from "../components/contentHeader";
 import { useState } from "react";
 import useAddSupply from "../hooks/useAddSupply";
@@ -15,88 +15,57 @@ import { useSemStore } from "../zustand/store";
 import AddSupplyModal from "../components/addSupplyModal";
 import RisFormModal from "../components/risFormModal";
 import PurchaseOrderModal from "../components/purchaseOrderModal";
+import SemModal from "../components/semModal";
+import SemInput from "../components/semInput";
+import { Button } from "flowbite-react";
+import useCrudSupply from "../hooks/useCrudSupply";
 
 const Supply = ({ cart }) => {
   //State
 
   const [supplyModal, setSupplyModal] = useState(false);
+  const [addSupplyModal, setAddSupplyModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
-  const [selectedSupply, setSelectedSupply] = useState(null);
-  const [isUpdate, setIsUpdate] = useState(false);
-  const [forms, setForms] = useState(SUPPLY_DEFAULT_VALUE);
-  const [search, setSearch] = useState("");
   const [poModal, setPoModal] = useState(false);
+  const [cartSupply, setCartSupply] = useState([]);
 
-  // Hooks
-
-  const { addSupply } = useAddSupply();
-  const { deleteSupply } = useDeleteSupply();
-  const { updateSupply } = useUpdateSupply();
-  const { data, loading } = useGetSupply();
-  const { cartSupply } = useSemStore();
-
-  // Local Fucntion
-
-  const handleUpdateForm = (event) => {
-    const { name, value } = event.target;
-    const newForms = { ...forms, [name]: value };
-    setForms(newForms);
-  };
-
-  const handleSubmit = () => {
-    if (!isUpdate) {
-      // addSupply(forms);
-      setPoModal(true);
-      setSupplyModal(false);
-      toast.success("Supply added successfully.");
-    } else {
-      updateSupply(forms);
-      setSupplyModal(false);
-      toast.success("Supply updated successfully.");
-    }
-  };
-
-  const handleDeleteSupply = () => {
-    deleteSupply(selectedSupply.id);
-    setDeleteModal(false);
-    toast.success("Deleted successfully.");
-  };
-
-  const handleSelectedSupplyUpdate = (data) => {
-    setForms(data);
-    setIsUpdate(true);
-  };
+  const { handleAddSupply, data } = useCrudSupply();
+  const [forms, setForms] = useState({
+    poNumber: "",
+    supplier: "",
+  });
 
   const handleAddingSupply = () => {
     setSupplyModal(true);
-    setIsUpdate(false);
-    setForms(SUPPLY_DEFAULT_VALUE);
   };
 
-  const query = data.filter((item) => {
-    const itemName = item?.name.toLowerCase();
-    const itemSearch = search?.toLowerCase();
-    if (itemName.startsWith(itemSearch)) {
-      return item;
-    }
-  });
+  const handleDelete = (id) => {
+    const cartSupplyCopy = [...cartSupply];
+    const output = cartSupplyCopy.filter((item) => {
+      if (item.id !== id) {
+        return item;
+      }
+    });
+
+    setCartSupply(output);
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    const output = { ...forms, [name]: value };
+    setForms(output);
+  };
+
+  const handleSubmit = () => {
+    handleAddSupply(forms, cartSupply);
+    setSupplyModal(false);
+    toast.success("Successfully Requested Supply");
+  };
 
   return (
     <>
-      {/* SUPPLY MODAL */}
-      <AddSupplyModal
-        size="5xl"
-        title={isUpdate ? "Update Supply" : "Add Supply"}
-        open={supplyModal}
-        handleClose={() => setSupplyModal(false)}
-        forms={forms}
-        handleSubmit={handleSubmit}
-        handleUpdateForm={handleUpdateForm}
-        isUpdate={isUpdate}
-      />
       <ConfirmationModal
         open={deleteModal}
-        event={handleDeleteSupply}
         handleClose={() => setDeleteModal(false)}
       />
 
@@ -107,32 +76,114 @@ const Supply = ({ cart }) => {
         open={poModal}
       />
 
+      <AddSupplyModal
+        open={addSupplyModal}
+        setCartSupply={setCartSupply}
+        cartSupply={cartSupply}
+        handleClose={() => setAddSupplyModal(false)}
+      ></AddSupplyModal>
+
+      {/* Request Supply Modal */}
+      <SemModal
+        size={"5xl"}
+        title={"Request Supply"}
+        open={supplyModal}
+        handleClose={() => setSupplyModal(false)}
+      >
+        <div className="wrapper my-5">
+          <>
+            <SemInput
+              event={handleChange}
+              name={"poNumber"}
+              placeholder={"Please enter the PO Number"}
+              label={"Purchase Order No."}
+            />
+            <SemInput
+              event={handleChange}
+              name={"supplier"}
+              placeholder={"Please Enter the supplier"}
+              label={"Supplier"}
+            />
+          </>
+          <div className="wrapper flex justify-between items-center my-10">
+            <h1 className="font-bold">Requested Supplies</h1>
+            <Button
+              gradientMonochrome="success"
+              onClick={() => setAddSupplyModal(true)}
+            >
+              <HiPlus color="white" className="mr-2 h-5 w-5" />
+              Add Supply
+            </Button>
+          </div>
+
+          <div class="relative overflow-x-auto">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+              <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                  <th scope="col" class="px-6 py-3">
+                    Stock / Property No.
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                    Description
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                    Unit
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                    Quantity
+                  </th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {cartSupply.map((item) => {
+                  return (
+                    <tr
+                      key={item.id}
+                      class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                    >
+                      <th
+                        scope="row"
+                        class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      >
+                        {item?.id}
+                      </th>
+                      <td class="px-6 py-4">{item?.description}</td>
+                      <td class="px-6 py-4">{item?.unit}</td>
+                      <td class="px-6 py-4">{item?.quantity}</td>
+                      <td>
+                        <Button
+                          onClick={() => handleDelete(item.id)}
+                          color={"failure"}
+                        >
+                          Delete
+                        </Button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <Button
+          onClick={handleSubmit}
+          className="w-full py-3"
+          gradientMonochrome="success"
+        >
+          Submit Request
+        </Button>
+      </SemModal>
+
       <div className="wrapper p-0 lg:p-5">
         <ContentHeader
           cart={cart}
-          setSearch={setSearch}
-          title="Supply"
+          title="Request Supply"
           Icon={HiOutlineTable}
           event={handleAddingSupply}
           tooltip={"Add supply to the system"}
         />
-
-        {loading && <Loading />}
-
-        {!loading && data.length <= 0 && (
-          <NoData title={"There's no supply, please add one."} />
-        )}
-
-        {!loading && data.length >= 1 && (
-          <SemSupplyTable
-            handleSelectedSupplyUpdate={handleSelectedSupplyUpdate}
-            setSupplyModal={setSupplyModal}
-            setSelectedSupply={setSelectedSupply}
-            setDeleteModal={setDeleteModal}
-            data={cart ? cartSupply : query}
-            cart={cart}
-          />
-        )}
+        <SemSupplyTable data={data} />
       </div>
     </>
   );

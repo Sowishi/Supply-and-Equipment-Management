@@ -22,7 +22,7 @@ const ContentHeader = ({ event, title, Icon, tooltip, setSearch, cart }) => {
           <Tooltip content={tooltip}>
             <Button onClick={event} gradientMonochrome="success">
               <HiPlus color="white" className="mr-2 h-5 w-5" />
-              Add {title}
+              {title}
             </Button>
           </Tooltip>
         </div>
