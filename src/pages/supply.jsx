@@ -26,7 +26,6 @@ const Supply = ({ cart }) => {
   const [supplyModal, setSupplyModal] = useState(false);
   const [addSupplyModal, setAddSupplyModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
-  const [poModal, setPoModal] = useState(false);
   const [cartSupply, setCartSupply] = useState([]);
 
   const { handleAddSupply, data } = useCrudSupply();
@@ -67,13 +66,6 @@ const Supply = ({ cart }) => {
       <ConfirmationModal
         open={deleteModal}
         handleClose={() => setDeleteModal(false)}
-      />
-
-      <PurchaseOrderModal
-        handleClose={() => setPoModal(false)}
-        title={`Purchase Order Form`}
-        size={"6xl"}
-        open={poModal}
       />
 
       <AddSupplyModal

@@ -9,19 +9,7 @@ import { HiDownload } from "react-icons/hi";
 import { usePDF } from "react-to-pdf";
 import PurchaseOrderRowDummy from "./purchaseOrderDummyRow";
 
-const PurchaseOrderModal = ({
-  title,
-  size,
-  open,
-  handleClose,
-  data,
-  viewOnly,
-  currentMode,
-  setCartModal,
-}) => {
-  const { addTransaction, addSupplyTransaction, addEquipmentTransaction } =
-    useAddTransaction();
-  const { currentUser, setCartSupply, setCartEquipment } = useSemStore();
+const PurchaseOrderModal = ({ title, size, open, handleClose, data }) => {
   const { toPDF, targetRef } = usePDF({ filename: "ris.pdf" });
 
   return (
@@ -92,34 +80,27 @@ const PurchaseOrderModal = ({
           </div>
         </div>
 
-        <div className="border border-slate-950 flex border-t-0">
-          <div className="basis-2/12 border border-slate-950 p-2 text-center">
-            <h1 className={`${false ? "opacity-0" : ""}`}>1 </h1>
-          </div>
-          <div className="basis-6/12 border border-slate-950 p-2 text-center">
-            <h1 className={`${false ? "opacity-0" : ""}`}>Battery AAA</h1>
-          </div>
-          <div className="basis-2/12 border border-slate-950 p-2 text-center">
-            <h1 className={`${false ? "opacity-0" : ""}`}>Pcs</h1>
-          </div>
-
-          <div className="basis-2/12 border border-slate-950 p-2 text-center">
-            <h1 className={`${false ? "opacity-0" : ""}`}>3</h1>
-          </div>
-        </div>
-
-        {data?.map((item) => {
+        {data.items?.map((item) => {
           return (
-            <RisFormRow
-              key={item.id}
-              stockNo={item.inventoryNumber || item.propertyNumber}
-              unit={item.unit}
-              decription={item.name + " | " + item.description}
-              rQuantity={item.borrowedQuantity ? item.borrowedQuantity : 1}
-              stockAvailable={item.quantity !== 0 ? true : false}
-              iQuantity={item.quantity}
-              remarks={item.remarks}
-            />
+            <div className="border border-slate-950 flex border-t-0">
+              <div className="basis-2/12 border border-slate-950 p-2 text-center">
+                <h1 className={`${false ? "opacity-0" : ""}`}>{item.id} </h1>
+              </div>
+              <div className="basis-6/12 border border-slate-950 p-2 text-center">
+                <h1 className={`${false ? "opacity-0" : ""}`}>
+                  {item.description}
+                </h1>
+              </div>
+              <div className="basis-2/12 border border-slate-950 p-2 text-center">
+                <h1 className={`${false ? "opacity-0" : ""}`}>{item.unit}</h1>
+              </div>
+
+              <div className="basis-2/12 border border-slate-950 p-2 text-center">
+                <h1 className={`${false ? "opacity-0" : ""}`}>
+                  {item.quantity}
+                </h1>
+              </div>
+            </div>
           );
         })}
 
@@ -131,66 +112,14 @@ const PurchaseOrderModal = ({
           </h1>
         </div> */}
       </div>
-      {viewOnly && currentMode == "Supply" && (
-        <div className="flex">
-          <Button
-            onClick={() => {
-              toPDF();
-            }}
-            className="w-full mt-5 py-3 mr-5"
-          >
-            Download <HiDownload className="mx-3" size={20} />
-          </Button>
-          <Button
-            color={"success"}
-            onClick={() => {
-              addSupplyTransaction(data, currentUser);
-              setCartModal(false);
-              handleClose();
-              toast.success("Succesfully added transaction");
-              setCartSupply([]);
-            }}
-            className="w-full mt-5 py-3"
-          >
-            Submit Supply RIS
-          </Button>
-        </div>
-      )}
-      {viewOnly && currentMode == "Equipment" && (
-        <div className="flex">
-          <Button
-            onClick={() => {
-              toPDF();
-            }}
-            className="w-full mt-5 py-3 mr-5"
-          >
-            Download <HiDownload className="mx-3" size={20} />
-          </Button>
-          <Button
-            color={"success"}
-            onClick={() => {
-              addEquipmentTransaction(data, currentUser);
-              setCartModal(false);
-              handleClose();
-              toast.success("Succesfully added transaction");
-              setCartEquipment([]);
-            }}
-            className="w-full mt-5 py-3"
-          >
-            Submit Equipment RIS
-          </Button>
-        </div>
-      )}
-      {!viewOnly && (
-        <Button
-          onClick={() => {
-            toPDF();
-          }}
-          className="w-full mt-5 py-3 mr-5"
-        >
-          Download <HiDownload className="mx-3" size={20} />
-        </Button>
-      )}
+      <Button
+        onClick={() => {
+          toPDF();
+        }}
+        className="w-full mt-5 py-3 mr-5"
+      >
+        Download <HiDownload className="mx-3" size={20} />
+      </Button>
     </SemModal>
   );
 };

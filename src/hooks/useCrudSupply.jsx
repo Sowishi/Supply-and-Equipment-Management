@@ -1,6 +1,8 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
+  doc,
   onSnapshot,
   serverTimestamp,
 } from "firebase/firestore";
@@ -33,7 +35,12 @@ const useCrudSupply = () => {
     });
   };
 
-  return { handleAddSupply, data };
+  const handleDeleteSupply = (id) => {
+    const docRef = doc(db, "supply", id);
+    deleteDoc(docRef);
+  };
+
+  return { handleAddSupply, data, handleDeleteSupply };
 };
 
 export default useCrudSupply;

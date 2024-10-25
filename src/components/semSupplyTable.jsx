@@ -3,10 +3,76 @@ import { HiOutlineCog, HiOutlinePlusCircle, HiTrash } from "react-icons/hi";
 import { useSemStore } from "../zustand/store";
 import { toast } from "react-toastify";
 import moment from "moment";
+import { useState } from "react";
+import SemModal from "./semModal";
+import useCrudSupply from "../hooks/useCrudSupply";
+import PurchaseOrderModal from "./purchaseOrderModal";
 
 export function SemSupplyTable({ data }) {
+  const [viewItemModal, setViewItemModal] = useState(false);
+  const [currentItem, setCurrentItem] = useState([]);
+  const [poModal, setPoModal] = useState(false);
+
+  const { handleDeleteSupply } = useCrudSupply();
+
   return (
     <div className="overflow-x-auto ">
+      <SemModal
+        title={"Supply Requested"}
+        size={"5xl"}
+        open={viewItemModal}
+        handleClose={() => setViewItemModal(false)}
+      >
+        <div class="relative overflow-x-auto">
+          <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                <th scope="col" class="px-6 py-3">
+                  Stock / Property No.
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  Description
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  Unit
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  Quantity
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentItem.items?.map((item) => {
+                return (
+                  <tr
+                    key={item.id}
+                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                  >
+                    <th
+                      scope="row"
+                      class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    >
+                      {item?.id}
+                    </th>
+                    <td class="px-6 py-4">{item?.description}</td>
+                    <td class="px-6 py-4">{item?.unit}</td>
+                    <td class="px-6 py-4">{item?.quantity}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </SemModal>
+
+      <PurchaseOrderModal
+        handleClose={() => setPoModal(false)}
+        title={`Purchase Order Form`}
+        size={"6xl"}
+        open={poModal}
+        data={currentItem}
+      />
+
       {data && (
         <Table striped hoverable>
           <Table.Head>
@@ -15,6 +81,9 @@ export function SemSupplyTable({ data }) {
             </Table.HeadCell>
             <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
               Supplier
+            </Table.HeadCell>
+            <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
+              Items
             </Table.HeadCell>
             <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
               Status
@@ -39,6 +108,16 @@ export function SemSupplyTable({ data }) {
                   <Table.Cell className="bg-slate-800  text-white">
                     {item.supplier}
                   </Table.Cell>
+                  <Table.Cell className="bg-slate-800  text-white">
+                    <Button
+                      onClick={() => {
+                        setCurrentItem(item);
+                        setViewItemModal(true);
+                      }}
+                    >
+                      View Item
+                    </Button>
+                  </Table.Cell>
                   <Table.Cell className="bg-slate-800  text-white font-bold">
                     {item.status}
                   </Table.Cell>
@@ -49,7 +128,21 @@ export function SemSupplyTable({ data }) {
                   )}
 
                   <Table.Cell className="bg-slate-800  text-white">
-                    <Button>Action</Button>
+                    <Dropdown placement="left" label="Action" title="Action">
+                      <Dropdown.Item
+                        onClick={() => {
+                          setCurrentItem(item);
+                          setPoModal(true);
+                        }}
+                      >
+                        View Purchase Order
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        onClick={() => handleDeleteSupply(item.id)}
+                      >
+                        Delete Request
+                      </Dropdown.Item>
+                    </Dropdown>
                   </Table.Cell>
                 </Table.Row>
               );
