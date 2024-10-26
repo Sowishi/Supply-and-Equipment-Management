@@ -10,7 +10,7 @@ import { db } from "../../firebase";
 import { useEffect, useState } from "react";
 
 const useCrudRequest = () => {
-  const colRef = collection(db, "supply");
+  const colRef = collection(db, "request");
 
   const [data, setData] = useState([]);
 
@@ -38,7 +38,7 @@ const useCrudRequest = () => {
   };
 
   const handleDeleteRequest = (id) => {
-    const docRef = doc(db, "supply", id);
+    const docRef = doc(db, "request", id);
     deleteDoc(docRef);
   };
 

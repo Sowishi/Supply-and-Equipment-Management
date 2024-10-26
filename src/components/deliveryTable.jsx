@@ -7,8 +7,9 @@ import { useState } from "react";
 import SemModal from "./semModal";
 import PurchaseOrderModal from "./purchaseOrderModal";
 import useCrudRequest from "../hooks/useCrudRequest";
+import DeliveryModal from "./deliveryModal";
 
-export function SemSupplyTable({ data }) {
+export function DeliveryTable({ data }) {
   const [viewItemModal, setViewItemModal] = useState(false);
   const [currentItem, setCurrentItem] = useState([]);
   const [poModal, setPoModal] = useState(false);
@@ -65,7 +66,7 @@ export function SemSupplyTable({ data }) {
         </div>
       </SemModal>
 
-      <PurchaseOrderModal
+      <DeliveryModal
         handleClose={() => setPoModal(false)}
         title={`Purchase Order Form`}
         size={"6xl"}
@@ -147,13 +148,10 @@ export function SemSupplyTable({ data }) {
                           setPoModal(true);
                         }}
                       >
-                        View Purchase Order
+                        View Delivery Reciepts
                       </Dropdown.Item>
-                      <Dropdown.Item
-                        onClick={() => handleDeleteRequest(item.id)}
-                      >
-                        Delete Request
-                      </Dropdown.Item>
+                      <Dropdown.Item>Update as Partial Delivered</Dropdown.Item>
+                      <Dropdown.Item>Update as Fully Delivered</Dropdown.Item>
                     </Dropdown>
                   </Table.Cell>
                 </Table.Row>

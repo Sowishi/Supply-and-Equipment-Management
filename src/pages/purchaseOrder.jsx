@@ -51,7 +51,7 @@ const PurchaseOrder = ({ cart }) => {
   const handleSubmit = () => {
     handleAddRequest(forms, cartSupply);
     setSupplyModal(false);
-    toast.success("Successfully Requested Supply");
+    toast.success("Successfully Requested");
   };
 
   return (
@@ -71,7 +71,7 @@ const PurchaseOrder = ({ cart }) => {
       {/* Request Supply Modal */}
       <SemModal
         size={"5xl"}
-        title={"Request Supply"}
+        title={"Request Items"}
         open={supplyModal}
         handleClose={() => setSupplyModal(false)}
       >
@@ -90,11 +90,13 @@ const PurchaseOrder = ({ cart }) => {
               label={"Supplier"}
             />
             <SemSelect
+              event={handleChange}
               name={"fundCluter"}
               label={"Fund Cluster"}
               data={["IGF", "RAF", "BRF", "TR"]}
             />
             <SemSelect
+              event={handleChange}
               name={"category"}
               label={"Category"}
               data={["Supply", "Equipment"]}
@@ -185,7 +187,6 @@ const PurchaseOrder = ({ cart }) => {
           title="Request"
           Icon={HiOutlineTable}
           event={handleAddingSupply}
-          tooltip={"Add supply to the system"}
         />
         <SemSupplyTable data={data} />
       </div>

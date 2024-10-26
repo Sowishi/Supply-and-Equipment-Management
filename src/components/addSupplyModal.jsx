@@ -34,7 +34,7 @@ const AddSupplyModal = ({
   return (
     <SemModal
       size={size}
-      title={"Add Supply"}
+      title={"Add Items"}
       open={open}
       handleClose={handleClose}
     >
@@ -56,7 +56,7 @@ const AddSupplyModal = ({
         gradientMonochrome="success"
       >
         <HiPlus color="white" className="mr-2 h-5 w-5" />
-        Add Supply
+        Add Item
       </Button>
     </SemModal>
   );
