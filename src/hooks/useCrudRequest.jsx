@@ -9,7 +9,7 @@ import {
 import { db } from "../../firebase";
 import { useEffect, useState } from "react";
 
-const useCrudSupply = () => {
+const useCrudRequest = () => {
   const colRef = collection(db, "supply");
 
   const [data, setData] = useState([]);
@@ -25,22 +25,24 @@ const useCrudSupply = () => {
     });
   }, []);
 
-  const handleAddSupply = (forms, cartSupply) => {
+  const handleAddRequest = (forms, cartSupply) => {
     addDoc(colRef, {
       poNumber: forms.poNumber,
       supplier: forms.supplier,
+      category: forms.category,
+      fundCluster: forms.fundCluster,
       items: cartSupply,
       status: "Pending",
       createdAt: serverTimestamp(),
     });
   };
 
-  const handleDeleteSupply = (id) => {
+  const handleDeleteRequest = (id) => {
     const docRef = doc(db, "supply", id);
     deleteDoc(docRef);
   };
 
-  return { handleAddSupply, data, handleDeleteSupply };
+  return { handleAddRequest, data, handleDeleteRequest };
 };
 
-export default useCrudSupply;
+export default useCrudRequest;

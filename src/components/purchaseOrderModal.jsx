@@ -24,14 +24,14 @@ const PurchaseOrderModal = ({ title, size, open, handleClose, data }) => {
         <div className="border border-slate-950 flex">
           <div className="basis-8/12 border border-slate-950 p-2">
             <div className="flex flex-col ml-3">
-              <h1>Supplier: Lucky Merchandise </h1>
+              <h1>Supplier: {data.supplier} </h1>
               <h1>Address: </h1>
               <h1>TIN: </h1>
             </div>
           </div>
           <div className="basis-4/12 border border-slate-950">
             <div className="flex flex-col ml-3">
-              <h1>P.0 No: </h1>
+              <h1>P.0 No: {data.poNumber} </h1>
               <h1>Date:</h1>
               <h1>Mode of Procurement:</h1>
             </div>

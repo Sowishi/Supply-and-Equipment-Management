@@ -1,26 +1,17 @@
 import { HiOutlineTable, HiPlus } from "react-icons/hi";
 import ContentHeader from "../components/contentHeader";
 import { useState } from "react";
-import useAddSupply from "../hooks/useAddSupply";
 import { toast } from "react-toastify";
-import useGetSupply from "../hooks/useGetSupply";
 import { SemSupplyTable } from "../components/semSupplyTable";
 import { ConfirmationModal } from "../components/confirmationModal";
-import useDeleteSupply from "../hooks/useDeleteSupply";
-import useUpdateSupply from "../hooks/useUpdateSupply";
-import Loading from "../components/loading";
-import NoData from "../components/noData";
-import { SUPPLY_DEFAULT_VALUE } from "../utils/constant";
-import { useSemStore } from "../zustand/store";
 import AddSupplyModal from "../components/addSupplyModal";
-import RisFormModal from "../components/risFormModal";
-import PurchaseOrderModal from "../components/purchaseOrderModal";
 import SemModal from "../components/semModal";
 import SemInput from "../components/semInput";
 import { Button } from "flowbite-react";
-import useCrudSupply from "../hooks/useCrudSupply";
+import SemSelect from "../components/semSelect";
+import useCrudRequest from "../hooks/useCrudRequest";
 
-const Supply = ({ cart }) => {
+const PurchaseOrder = ({ cart }) => {
   //State
 
   const [supplyModal, setSupplyModal] = useState(false);
@@ -28,10 +19,12 @@ const Supply = ({ cart }) => {
   const [deleteModal, setDeleteModal] = useState(false);
   const [cartSupply, setCartSupply] = useState([]);
 
-  const { handleAddSupply, data } = useCrudSupply();
+  const { handleAddRequest, data } = useCrudRequest();
   const [forms, setForms] = useState({
     poNumber: "",
     supplier: "",
+    fundCluster: "IGF",
+    category: "Supply",
   });
 
   const handleAddingSupply = () => {
@@ -56,7 +49,7 @@ const Supply = ({ cart }) => {
   };
 
   const handleSubmit = () => {
-    handleAddSupply(forms, cartSupply);
+    handleAddRequest(forms, cartSupply);
     setSupplyModal(false);
     toast.success("Successfully Requested Supply");
   };
@@ -96,6 +89,16 @@ const Supply = ({ cart }) => {
               placeholder={"Please Enter the supplier"}
               label={"Supplier"}
             />
+            <SemSelect
+              name={"fundCluter"}
+              label={"Fund Cluster"}
+              data={["IGF", "RAF", "BRF", "TR"]}
+            />
+            <SemSelect
+              name={"category"}
+              label={"Category"}
+              data={["Supply", "Equipment"]}
+            />
           </>
           <div className="wrapper flex justify-between items-center my-10">
             <h1 className="font-bold">Requested Supplies</h1>
@@ -104,7 +107,7 @@ const Supply = ({ cart }) => {
               onClick={() => setAddSupplyModal(true)}
             >
               <HiPlus color="white" className="mr-2 h-5 w-5" />
-              Add Supply
+              Add
             </Button>
           </div>
 
@@ -168,9 +171,18 @@ const Supply = ({ cart }) => {
       </SemModal>
 
       <div className="wrapper p-0 lg:p-5">
+        <div className="wrapper mb-5">
+          <h1 className="text-white font-bold text-3xl">
+            Purchase Order / Request Supplies & Equipment
+          </h1>
+          <p className="text-white">
+            This is where you can request supplies & equipments
+          </p>
+        </div>
+
         <ContentHeader
           cart={cart}
-          title="Request Supply"
+          title="Request"
           Icon={HiOutlineTable}
           event={handleAddingSupply}
           tooltip={"Add supply to the system"}
@@ -181,4 +193,4 @@ const Supply = ({ cart }) => {
   );
 };
 
-export default Supply;
+export default PurchaseOrder;

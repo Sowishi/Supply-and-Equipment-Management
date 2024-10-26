@@ -4,7 +4,6 @@ import SemSidebar from "../components/semSidebar";
 import SemModal from "../components/semModal";
 import { Button, Tabs } from "flowbite-react";
 import { HiOutlineTable, HiViewGrid } from "react-icons/hi";
-import Supply from "../pages/supply";
 import Equipment from "../pages/equipment";
 import { useSemStore } from "../zustand/store";
 import NoData from "../components/noData";

@@ -5,15 +5,15 @@ import { toast } from "react-toastify";
 import moment from "moment";
 import { useState } from "react";
 import SemModal from "./semModal";
-import useCrudSupply from "../hooks/useCrudSupply";
 import PurchaseOrderModal from "./purchaseOrderModal";
+import useCrudRequest from "../hooks/useCrudRequest";
 
 export function SemSupplyTable({ data }) {
   const [viewItemModal, setViewItemModal] = useState(false);
   const [currentItem, setCurrentItem] = useState([]);
   const [poModal, setPoModal] = useState(false);
 
-  const { handleDeleteSupply } = useCrudSupply();
+  const { handleDeleteRequest } = useCrudRequest();
 
   return (
     <div className="overflow-x-auto ">
@@ -86,6 +86,12 @@ export function SemSupplyTable({ data }) {
               Items
             </Table.HeadCell>
             <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
+              Fund Cluster
+            </Table.HeadCell>
+            <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
+              Category
+            </Table.HeadCell>
+            <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
               Status
             </Table.HeadCell>
             <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
@@ -118,6 +124,12 @@ export function SemSupplyTable({ data }) {
                       View Item
                     </Button>
                   </Table.Cell>
+                  <Table.Cell className="bg-slate-800  text-white">
+                    {item.fundCluster}
+                  </Table.Cell>
+                  <Table.Cell className="bg-slate-800  text-white">
+                    {item.category}
+                  </Table.Cell>
                   <Table.Cell className="bg-slate-800  text-white font-bold">
                     {item.status}
                   </Table.Cell>
@@ -138,7 +150,7 @@ export function SemSupplyTable({ data }) {
                         View Purchase Order
                       </Dropdown.Item>
                       <Dropdown.Item
-                        onClick={() => handleDeleteSupply(item.id)}
+                        onClick={() => handleDeleteRequest(item.id)}
                       >
                         Delete Request
                       </Dropdown.Item>
