@@ -14,7 +14,7 @@ export function DeliveryTable({ data }) {
   const [currentItem, setCurrentItem] = useState([]);
   const [poModal, setPoModal] = useState(false);
 
-  const { handleDeleteRequest } = useCrudRequest();
+  const { handleUpdateStatus } = useCrudRequest();
 
   return (
     <div className="overflow-x-auto ">
@@ -150,8 +150,20 @@ export function DeliveryTable({ data }) {
                       >
                         View Delivery Reciepts
                       </Dropdown.Item>
-                      <Dropdown.Item>Update as Partial Delivered</Dropdown.Item>
-                      <Dropdown.Item>Update as Fully Delivered</Dropdown.Item>
+                      <Dropdown.Item
+                        onClick={() => {
+                          handleUpdateStatus(item.id, "Partial Delivered");
+                        }}
+                      >
+                        Update as Partial Delivered
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        onClick={() => {
+                          handleUpdateStatus(item.id, "Fully Delivered");
+                        }}
+                      >
+                        Update as Fully Delivered
+                      </Dropdown.Item>
                     </Dropdown>
                   </Table.Cell>
                 </Table.Row>

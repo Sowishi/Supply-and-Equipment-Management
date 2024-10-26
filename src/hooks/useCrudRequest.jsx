@@ -5,6 +5,7 @@ import {
   doc,
   onSnapshot,
   serverTimestamp,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useEffect, useState } from "react";
@@ -42,7 +43,12 @@ const useCrudRequest = () => {
     deleteDoc(docRef);
   };
 
-  return { handleAddRequest, data, handleDeleteRequest };
+  const handleUpdateStatus = (id, status) => {
+    const docRef = doc(db, "request", id);
+    updateDoc(docRef, { status });
+  };
+
+  return { handleAddRequest, data, handleDeleteRequest, handleUpdateStatus };
 };
 
 export default useCrudRequest;
