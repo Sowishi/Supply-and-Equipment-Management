@@ -15,6 +15,7 @@ import Delivery from "./delivery";
 import Inspection from "./inspection";
 import Supply from "./supply";
 import EquipmentPage from "./equipmentPage";
+import SupplyPage from "./SupplyPage";
 
 const MasterRecords = () => {
   const { currentUser } = useSemStore();
@@ -54,7 +55,9 @@ const MasterRecords = () => {
             <Tabs.Item title="Equipments" icon={HiViewGrid}>
               <EquipmentPage />
             </Tabs.Item>
-            <Tabs.Item title="Supplies" icon={HiMagnifyingGlass}></Tabs.Item>
+            <Tabs.Item title="Supplies" icon={HiMagnifyingGlass}>
+              <SupplyPage />
+            </Tabs.Item>
             <Tabs.Item title="Office" icon={HiOfficeBuilding}>
               <Offices />
             </Tabs.Item>
