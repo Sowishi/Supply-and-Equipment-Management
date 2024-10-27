@@ -1,8 +1,11 @@
 import {
   addDoc,
   collection,
+  doc,
+  getDoc,
   onSnapshot,
   serverTimestamp,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useEffect, useState } from "react";
@@ -30,7 +33,19 @@ const useCrudItems = () => {
     });
   };
 
-  return { handleAddItem, data };
+  const handleDecrementQuantity = async (item) => {
+    item.item.map(async (data) => {
+      const docRef = doc(db, "items", data.docID);
+      const docSnap = await getDoc(docRef);
+      const currentQuantity = parseInt(docSnap.data().quantity);
+
+      updateDoc(docRef, {
+        quantity: currentQuantity - parseInt(data.borrowedQuantity),
+      });
+    });
+  };
+
+  return { handleAddItem, data, handleDecrementQuantity };
 };
 
 export default useCrudItems;

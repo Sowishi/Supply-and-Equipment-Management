@@ -7,6 +7,7 @@ import useUpdateTransaction from "../hooks/useUpdateTransaction";
 import QRCode from "react-qr-code";
 import SemModal from "./semModal";
 import { useState } from "react";
+import useCrudItems from "../hooks/useCrudItems";
 
 const SemTransactionTable = ({
   data,
@@ -19,6 +20,7 @@ const SemTransactionTable = ({
   const { data: equipment } = useGetEquipment();
   const { currentUser } = useSemStore();
   const { approveTransaction, rejectTransaction } = useUpdateTransaction();
+  const { handleDecrementQuantity } = useCrudItems();
   const isAdmin = currentUser?.role == "Admin";
 
   const [qrModal, setQrModal] = useState(false);
@@ -225,13 +227,14 @@ const SemTransactionTable = ({
                     <Table.Cell className="bg-slate-800  text-white ">
                       <div className="wrapper flex">
                         <Button
-                          disabled={
-                            item.status == "Approve" ||
-                            item.status === "Rejected"
-                          }
-                          onClick={() =>
-                            approveTransaction(item.id, currentUser, item.item)
-                          }
+                          // disabled={
+                          //   item.status == "Approve" ||
+                          //   item.status === "Rejected"
+                          // }
+                          onClick={() => {
+                            handleDecrementQuantity(item);
+                            approveTransaction(item.id, currentUser, item.item);
+                          }}
                           className="mr-2"
                           gradientMonochrome="success"
                         >

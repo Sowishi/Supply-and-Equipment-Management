@@ -42,6 +42,13 @@ const DashboardLayout = ({ children }) => {
     );
   };
 
+  const hasZeroQuantity = () => {
+    return cartSupply?.some(
+      (item) =>
+        item.borrowedQuantity === 0 || item.borrowedQuantity === undefined
+    );
+  };
+
   return (
     <div
       style={{
