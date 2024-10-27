@@ -37,7 +37,7 @@ export function SemEquipmentTable({
 
   const handleIncrement = (data) => {
     const cartEquipmentCopy = [...cartEquipment];
-    cartEquipment.map((item) => {
+    cartEquipmentCopy.map((item) => {
       if (item.id == data.id) {
         if (item.borrowedQuantity == undefined) {
           item.borrowedQuantity = 2;
@@ -50,7 +50,7 @@ export function SemEquipmentTable({
   };
   const handleDecrement = (data) => {
     const cartEquipmentCopy = [...cartEquipment];
-    cartEquipment.map((item) => {
+    cartEquipmentCopy.map((item) => {
       if (item.id == data.id) {
         item.borrowedQuantity = parseInt(item.borrowedQuantity) - 1;
       }

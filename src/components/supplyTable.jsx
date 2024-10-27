@@ -1,13 +1,68 @@
 import { Button, Dropdown, Table, Tooltip } from "flowbite-react";
 import moment from "moment";
 import { HiPlus, HiPlusCircle } from "react-icons/hi";
+import { useSemStore } from "../zustand/store";
+import SemInput from "./semInput";
+import { useState } from "react";
 
-export function SupplyTable({ data, isClient }) {
+export function SupplyTable({ data, isClient, isCart, error, setError }) {
   const filterData = data.filter((item) => {
     if (item.category == "Supply") {
       return item;
     }
   });
+
+  const { setCartEquipment, setCartSupply, cartSupply } = useSemStore();
+
+  const handleAddCart = (item) => {
+    const cartSupplyCopy = [...cartSupply];
+    cartSupplyCopy.push(item);
+    setCartSupply(cartSupplyCopy);
+  };
+
+  const handlelDeleteCart = (data) => {
+    const cartSupplyCopy = [...cartSupply];
+    const output = cartSupplyCopy.filter((item) => {
+      if (item.docID !== data.docID) {
+        return item;
+      }
+    });
+    setCartSupply(output);
+  };
+
+  const handleIncrement = (data) => {
+    const cartSupplyCopy = [...cartSupply];
+    cartSupplyCopy.map((item) => {
+      if (item.docID == data.docID) {
+        if (item.borrowedQuantity == undefined) {
+          item.borrowedQuantity = 1;
+        } else {
+          item.borrowedQuantity = parseInt(item.borrowedQuantity) + 1;
+        }
+
+        if (item.borrowedQuantity > data.quantity) {
+          setError(true);
+        } else {
+          setError(false);
+        }
+      }
+    });
+    setCartSupply(cartSupplyCopy);
+  };
+  const handleDecrement = (data) => {
+    const cartSupplyCopy = [...cartSupply];
+    cartSupplyCopy.map((item) => {
+      if (item.docID == data.docID) {
+        item.borrowedQuantity = parseInt(item.borrowedQuantity) - 1;
+        if (item.borrowedQuantity > data.quantity) {
+          setError(true);
+        } else {
+          setError(false);
+        }
+      }
+    });
+    setCartEquipment(cartSupplyCopy);
+  };
 
   return (
     <div className="overflow-x-auto ">
@@ -35,13 +90,19 @@ export function SupplyTable({ data, isClient }) {
             {isClient && (
               <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500"></Table.HeadCell>
             )}
+            {isCart && (
+              <>
+                <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500"></Table.HeadCell>
+                <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500"></Table.HeadCell>
+              </>
+            )}
           </Table.Head>
           <Table.Body className="divide-y">
             {filterData.map((item, index) => {
               const date = moment(item?.createdAt?.toDate()).format("LLL");
 
               return (
-                <Table.Row key={item.id}>
+                <Table.Row key={item.docID}>
                   <Table.Cell className="bg-slate-800  text-white">
                     {item.id}
                   </Table.Cell>
@@ -63,9 +124,71 @@ export function SupplyTable({ data, isClient }) {
                   </Table.Cell>
                   {isClient && (
                     <Table.Cell className="bg-slate-800  text-white font-bold">
-                      <Button gradientMonochrome="success">
+                      <Button
+                        onClick={() => handleAddCart(item)}
+                        gradientMonochrome="success"
+                      >
                         <HiPlusCircle color="white" className="mr-2 h-5 w-5" />
                         ADD
+                      </Button>
+                    </Table.Cell>
+                  )}
+                  {isCart && (
+                    <Table.Cell className="bg-slate-800  text-white ">
+                      <div className="flex justify-center items-center ">
+                        <Button
+                          className="mx-3"
+                          disabled={item.borrowedQuantity <= 1}
+                          onClick={() => handleDecrement(item)}
+                        >
+                          -
+                        </Button>
+
+                        <SemInput
+                          className="mx-3"
+                          value={
+                            item.borrowedQuantity ? item.borrowedQuantity : 0
+                          }
+                          event={(event) => {
+                            if (parseInt(event.target.value) > item.quantity) {
+                              setError(true);
+                            } else {
+                              setError(false);
+                            }
+
+                            const cartSupplyCopy = [...cartSupply];
+                            cartSupplyCopy.map((supply) => {
+                              if (supply.docID == item.docID) {
+                                if (event.target.value == "") {
+                                  supply.borrowedQuantity = parseInt(0);
+                                } else {
+                                  supply.borrowedQuantity = parseInt(
+                                    event.target.value
+                                  );
+                                }
+                              }
+                            });
+
+                            setCartEquipment(cartSupplyCopy);
+                          }}
+                        />
+
+                        <Button
+                          className="mx-3"
+                          onClick={() => handleIncrement(item)}
+                        >
+                          +
+                        </Button>
+                      </div>
+                    </Table.Cell>
+                  )}
+                  {isCart && (
+                    <Table.Cell className="bg-slate-800  text-white font-bold">
+                      <Button
+                        onClick={() => handlelDeleteCart(item)}
+                        gradientMonochrome="failure"
+                      >
+                        DELETE
                       </Button>
                     </Table.Cell>
                   )}

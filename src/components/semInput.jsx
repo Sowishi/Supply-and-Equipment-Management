@@ -11,6 +11,7 @@ const SemInput = ({
   name,
   color,
   value,
+  style,
 }) => {
   return (
     <div className="my-2">
