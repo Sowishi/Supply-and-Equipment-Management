@@ -81,7 +81,12 @@ const Transaction = () => {
               </Button>
             </Button.Group>
           </div>
-
+          <div className="wrapper my-5">
+            <h1 className="text-white font-bold text-3xl">Transaction</h1>
+            <p className="text-white">
+              This is where you can monitor all the transactions
+            </p>
+          </div>{" "}
           <SemTransactionTable
             setCurrentTransaction={setCurrentTransaction}
             setIcsForm={setIcsForm}

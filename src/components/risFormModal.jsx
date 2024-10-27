@@ -90,8 +90,8 @@ const RisFormModal = ({
         {data?.map((item) => {
           return (
             <RisFormRow
-              key={item.id}
-              stockNo={item.inventoryNumber || item.propertyNumber}
+              key={item.docID}
+              stockNo={item.id}
               unit={item.unit}
               decription={item.description}
               rQuantity={item.borrowedQuantity ? item.borrowedQuantity : 1}
