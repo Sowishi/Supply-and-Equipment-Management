@@ -4,7 +4,7 @@ import { EquipmentTable } from "../components/equipmentTable";
 import useCrudItems from "../hooks/useCrudItems";
 import { SupplyTable } from "../components/supplyTable";
 
-const SupplyPage = ({ cart }) => {
+const SupplyPage = ({ isClient }) => {
   const { data } = useCrudItems();
 
   return (
@@ -17,7 +17,7 @@ const SupplyPage = ({ cart }) => {
           </p>
         </div>
 
-        <SupplyTable data={data} />
+        <SupplyTable isClient={isClient} data={data} />
       </div>
     </>
   );

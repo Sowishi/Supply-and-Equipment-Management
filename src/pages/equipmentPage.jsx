@@ -3,7 +3,7 @@ import { InspectionTable } from "../components/inspectionTable";
 import { EquipmentTable } from "../components/equipmentTable";
 import useCrudItems from "../hooks/useCrudItems";
 
-const EquipmentPage = ({ cart }) => {
+const EquipmentPage = ({ isClient }) => {
   const { data } = useCrudItems();
 
   return (
@@ -16,7 +16,7 @@ const EquipmentPage = ({ cart }) => {
           </p>
         </div>
 
-        <EquipmentTable data={data} />
+        <EquipmentTable isClient={isClient} data={data} />
       </div>
     </>
   );

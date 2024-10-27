@@ -1,7 +1,8 @@
 import { Button, Dropdown, Table, Tooltip } from "flowbite-react";
 import moment from "moment";
+import { HiPlus, HiPlusCircle } from "react-icons/hi";
 
-export function SupplyTable({ data }) {
+export function SupplyTable({ data, isClient }) {
   const filterData = data.filter((item) => {
     if (item.category == "Supply") {
       return item;
@@ -31,7 +32,9 @@ export function SupplyTable({ data }) {
             <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
               Date
             </Table.HeadCell>
-            {/* <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500"></Table.HeadCell> */}
+            {isClient && (
+              <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500"></Table.HeadCell>
+            )}
           </Table.Head>
           <Table.Body className="divide-y">
             {filterData.map((item, index) => {
@@ -58,9 +61,14 @@ export function SupplyTable({ data }) {
                   <Table.Cell className="bg-slate-800  text-white font-bold">
                     {date}
                   </Table.Cell>
-                  {/* <Table.Cell className="bg-slate-800  text-white font-bold">
-                    <Button color={"failure"}>Delete</Button>
-                  </Table.Cell> */}
+                  {isClient && (
+                    <Table.Cell className="bg-slate-800  text-white font-bold">
+                      <Button gradientMonochrome="success">
+                        <HiPlusCircle color="white" className="mr-2 h-5 w-5" />
+                        ADD
+                      </Button>
+                    </Table.Cell>
+                  )}
                 </Table.Row>
               );
             })}

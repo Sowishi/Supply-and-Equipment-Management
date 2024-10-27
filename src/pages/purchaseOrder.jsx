@@ -18,6 +18,7 @@ const PurchaseOrder = ({ cart }) => {
   const [addSupplyModal, setAddSupplyModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [cartSupply, setCartSupply] = useState([]);
+  const [search, setSearch] = useState("");
 
   const { handleAddRequest, data } = useCrudRequest();
   const [forms, setForms] = useState({
@@ -184,6 +185,7 @@ const PurchaseOrder = ({ cart }) => {
         </div>
 
         <ContentHeader
+          setSearch={setSearch}
           cart={cart}
           title="Request"
           Icon={HiOutlineTable}

@@ -29,10 +29,10 @@ const MasterRecords = () => {
         <div className="container mx-auto">
           <Tabs variant="pills" className="mx-5">
             <Tabs.Item active title="Supply" icon={HiOutlineTable}>
-              <Supply />
+              <SupplyPage isClient={true} />
             </Tabs.Item>
             <Tabs.Item title="Equipment" icon={HiViewGrid}>
-              <Equipment />
+              <EquipmentPage isClient={true} />
             </Tabs.Item>
           </Tabs>
         </div>

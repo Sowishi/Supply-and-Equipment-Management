@@ -43,11 +43,11 @@ const DashboardLayout = ({ children }) => {
       <SemModal
         dark={true}
         title={`Your Item Cart`}
-        size={"xxl"}
+        size={"6xl"}
         open={cartModal}
         handleClose={() => setCartModal(false)}
       >
-        <div className="container">
+        <div className="container mx-auto">
           <Tabs variant="pills" className="mx-5 mb-5">
             <Tabs.Item
               onClick={() => setCurrentMode("Supply")}
