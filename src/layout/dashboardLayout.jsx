@@ -22,6 +22,7 @@ const DashboardLayout = ({ children }) => {
   const [risForm, setRisForm] = useState(false);
   const [currentMode, setCurrentMode] = useState("Supply");
   const [error, setError] = useState(false);
+  const [errorEquipment, setErrorEquipment] = useState(false);
 
   const {
     cartSupply,
@@ -33,8 +34,9 @@ const DashboardLayout = ({ children }) => {
 
   const isSupplyCartEmpty = cartSupply.length <= 0;
   const isEquipmentCartEmpty = cartEquipment.length <= 0;
-  const hasZeroQuantity = () => {
-    return cartSupply?.some(
+
+  const hasZeroQuantityEquipment = () => {
+    return cartEquipment?.some(
       (item) =>
         item.borrowedQuantity === 0 || item.borrowedQuantity === undefined
     );
@@ -103,18 +105,23 @@ const DashboardLayout = ({ children }) => {
                 <NoData title={"Your cart is empty try addding one."} />
               ) : (
                 <EquipmentTable
-                  setError={setError}
-                  error={error}
+                  setErrorEquipment={setErrorEquipment}
                   data={cartEquipment}
                   isCart={true}
                 />
               )}
-              <div className="w-full flex flex-row mt-20">
+              <div className="w-full flex flex-col justify-center items-center mt-20">
                 {/* <Button color={"success"} className="w-full py-2 mx-3">
                   Add Unique
                 </Button> */}
-
+                {errorEquipment && (
+                  <Alert color="failure" className="mb-10">
+                    <span className="font-medium">Error</span>The borrowing
+                    limit has been reached; please adjust your selection.
+                  </Alert>
+                )}
                 <Button
+                  disabled={errorEquipment || hasZeroQuantityEquipment()}
                   onClick={() => {
                     setCurrentMode("Equipment");
                     setRisForm(true);

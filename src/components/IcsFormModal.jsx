@@ -81,7 +81,7 @@ const IcsFormModal = ({
                 <h1>{1 * parseInt(item.unitCost)}</h1>
               </div>
               <div className="basis-4/12 border border-slate-950 p-2 text-center">
-                <h1>{item.name + " | " + item.description}</h1>
+                <h1>{item.description}</h1>
               </div>
               <div className="basis-2/12 border border-slate-950 p-2 text-center">
                 <h1>{item.inventoryNumber}</h1>

@@ -4,7 +4,7 @@ import { HiPlusCircle } from "react-icons/hi";
 import { useSemStore } from "../zustand/store";
 import SemInput from "./semInput";
 
-export function EquipmentTable({ data, isClient, isCart, error, setError }) {
+export function EquipmentTable({ data, isClient, isCart, setErrorEquipment }) {
   const filterData = data.filter((item) => {
     if (item.category == "Equipment") {
       return item;
@@ -40,9 +40,9 @@ export function EquipmentTable({ data, isClient, isCart, error, setError }) {
         }
 
         if (item.borrowedQuantity > data.quantity) {
-          setError(true);
+          setErrorEquipment(true);
         } else {
-          setError(false);
+          setErrorEquipment(false);
         }
       }
     });
@@ -54,9 +54,9 @@ export function EquipmentTable({ data, isClient, isCart, error, setError }) {
       if (item.docID == data.docID) {
         item.borrowedQuantity = parseInt(item.borrowedQuantity) - 1;
         if (item.borrowedQuantity > data.quantity) {
-          setError(true);
+          setErrorEquipment(true);
         } else {
-          setError(false);
+          setErrorEquipment(false);
         }
       }
     });
@@ -149,9 +149,9 @@ export function EquipmentTable({ data, isClient, isCart, error, setError }) {
                           }
                           event={(event) => {
                             if (parseInt(event.target.value) > item.quantity) {
-                              setError(true);
+                              setErrorEquipment(true);
                             } else {
-                              setError(false);
+                              setErrorEquipment(false);
                             }
 
                             const cartEquipmentCopy = [...cartEquipment];
