@@ -3,7 +3,7 @@ import ContentHeader from "../components/contentHeader";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { SemSupplyTable } from "../components/semSupplyTable";
-import { ConfirmationModal } from "../components/confirmationModal";
+import ConfirmationModal from "../components/confirmationModal";
 import AddSupplyModal from "../components/addSupplyModal";
 import SemModal from "../components/semModal";
 import SemInput from "../components/semInput";

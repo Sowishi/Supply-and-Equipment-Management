@@ -3,7 +3,7 @@ import { Button, Dropdown, Table, Tooltip } from "flowbite-react";
 import moment from "moment";
 import { useState } from "react";
 import SemModal from "./semModal";
-import { ConfirmationModal } from "./confirmationModal.jsx";
+import ConfirmationModal from "./confirmationModal.jsx";
 import PurchaseOrderModal from "./purchaseOrderModal";
 import useCrudRequest from "../hooks/useCrudRequest";
 import { toast } from "react-toastify";

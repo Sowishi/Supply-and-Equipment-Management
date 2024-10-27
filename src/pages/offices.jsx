@@ -11,7 +11,7 @@ import useGetOffices from "../hooks/useGetOffices";
 import { SemOfficesTable } from "../components/semOfficesTable";
 import useDeleteOffice from "../hooks/useDeleteOffice";
 import ContentHeader from "../components/contentHeader";
-import { ConfirmationModal } from "../components/confirmationModal";
+import ConfirmationModal from "../components/confirmationModal";
 import useUpdateOffice from "../hooks/useUpdateOffice";
 import NoData from "../components/noData";
 import Loading from "../components/loading";

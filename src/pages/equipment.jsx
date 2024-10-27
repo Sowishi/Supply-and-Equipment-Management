@@ -8,7 +8,7 @@ import useAddEquipment from "../hooks/useAddEquipment";
 import { toast } from "react-toastify";
 import useGetEquipment from "../hooks/useGetEquipment";
 import { SemEquipmentTable } from "../components/semEquipmentTable";
-import { ConfirmationModal } from "../components/confirmationModal";
+import ConfirmationModal from "../components/confirmationModal";
 import useDeleteEquipment from "../hooks/useDeleteEquipment";
 import useUpdateEquipment from "../hooks/useUpdateEquipment";
 import { useSemStore } from "../zustand/store";

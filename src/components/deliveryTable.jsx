@@ -5,16 +5,23 @@ import { toast } from "react-toastify";
 import moment from "moment";
 import { useState } from "react";
 import SemModal from "./semModal";
-import PurchaseOrderModal from "./purchaseOrderModal";
 import useCrudRequest from "../hooks/useCrudRequest";
 import DeliveryModal from "./deliveryModal";
+import ConfirmationModal from "./confirmationModal";
 
 export function DeliveryTable({ data }) {
   const [viewItemModal, setViewItemModal] = useState(false);
   const [currentItem, setCurrentItem] = useState([]);
   const [poModal, setPoModal] = useState(false);
-
+  const [confirmModal, setConfirmModal] = useState(false);
+  const [currentStatus, setCurrentStatus] = useState("");
   const { handleUpdateStatus } = useCrudRequest();
+
+  const handleStatusChange = (item, status) => {
+    setConfirmModal(true);
+    setCurrentItem(item);
+    setCurrentStatus(status);
+  };
 
   return (
     <div className="overflow-x-auto ">
@@ -72,6 +79,17 @@ export function DeliveryTable({ data }) {
         size={"6xl"}
         open={poModal}
         data={currentItem}
+      />
+
+      <ConfirmationModal
+        text={currentStatus}
+        event={() => {
+          handleUpdateStatus(currentItem.id, currentStatus);
+          setConfirmModal(false);
+        }}
+        open={confirmModal}
+        handleClose={() => setConfirmModal(false)}
+        success={true}
       />
 
       {data && (
@@ -153,21 +171,21 @@ export function DeliveryTable({ data }) {
                       </Dropdown.Item>
                       <Dropdown.Item
                         onClick={() => {
-                          handleUpdateStatus(item.id, "Partial Delivered");
+                          handleStatusChange(item, "Partial Delivered");
                         }}
                       >
                         Update as Partial Delivered
                       </Dropdown.Item>
                       <Dropdown.Item
                         onClick={() => {
-                          handleUpdateStatus(item.id, "Fully Delivered");
+                          handleStatusChange(item, "Fully Delivered");
                         }}
                       >
                         Update as Fully Delivered
                       </Dropdown.Item>
                       <Dropdown.Item
                         onClick={() => {
-                          handleUpdateStatus(item.id, "Rejected");
+                          handleStatusChange(item, "Rejected");
                         }}
                       >
                         Reject
