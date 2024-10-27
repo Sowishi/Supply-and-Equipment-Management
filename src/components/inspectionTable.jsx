@@ -8,11 +8,14 @@ import SemModal from "./semModal";
 import PurchaseOrderModal from "./purchaseOrderModal";
 import useCrudRequest from "../hooks/useCrudRequest";
 import DeliveryModal from "./deliveryModal";
+import ConfirmationModal from "./confirmationModal";
 
 export function InspectionTable({ data }) {
   const [viewItemModal, setViewItemModal] = useState(false);
   const [currentItem, setCurrentItem] = useState([]);
   const [poModal, setPoModal] = useState(false);
+  const [confirmModal, setConfirmModal] = useState(false);
+  const [currentStatus, setCurrentStatus] = useState("");
 
   const { handleUpdateStatus } = useCrudRequest();
 
@@ -21,6 +24,12 @@ export function InspectionTable({ data }) {
       return item;
     }
   });
+
+  const handleStatusChange = (item, status) => {
+    setConfirmModal(true);
+    setCurrentItem(item);
+    setCurrentStatus(status);
+  };
 
   return (
     <div className="overflow-x-auto ">
@@ -80,6 +89,16 @@ export function InspectionTable({ data }) {
         data={currentItem}
       />
 
+      <ConfirmationModal
+        text={currentStatus}
+        event={() => {
+          handleUpdateStatus(currentItem.id, currentStatus);
+          setConfirmModal(false);
+        }}
+        open={confirmModal}
+        handleClose={() => setConfirmModal(false)}
+        success={true}
+      />
       {data && (
         <Table striped hoverable>
           <Table.Head>
@@ -151,14 +170,14 @@ export function InspectionTable({ data }) {
                     <Dropdown placement="left" label="Action" title="Action">
                       <Dropdown.Item
                         onClick={() => {
-                          handleUpdateStatus(item.id, "Completed");
+                          handleStatusChange(item, "Completed");
                         }}
                       >
                         Completed
                       </Dropdown.Item>
                       <Dropdown.Item
                         onClick={() => {
-                          handleUpdateStatus(item.id, "Rejected");
+                          handleStatusChange(item, "Rejected");
                         }}
                       >
                         Rejected
