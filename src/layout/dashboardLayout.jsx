@@ -14,6 +14,7 @@ import RisFormDummyRow from "../components/risFormDummyRow";
 import RisFormModal from "../components/risFormModal";
 import cn from "../assets/cnsc front.jpeg";
 import { SupplyTable } from "../components/supplyTable";
+import { EquipmentTable } from "../components/equipmentTable";
 
 const DashboardLayout = ({ children }) => {
   const [isOpen, setOpen] = useState(false);
@@ -101,7 +102,12 @@ const DashboardLayout = ({ children }) => {
               {isEquipmentCartEmpty ? (
                 <NoData title={"Your cart is empty try addding one."} />
               ) : (
-                <h1>idu</h1>
+                <EquipmentTable
+                  setError={setError}
+                  error={error}
+                  data={cartEquipment}
+                  isCart={true}
+                />
               )}
               <div className="w-full flex flex-row mt-20">
                 {/* <Button color={"success"} className="w-full py-2 mx-3">
