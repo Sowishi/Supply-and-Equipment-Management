@@ -10,6 +10,7 @@ import useCrudRequest from "../hooks/useCrudRequest";
 import DeliveryModal from "./deliveryModal";
 import ConfirmationModal from "./confirmationModal";
 import InspectionModal from "./inspectionModal";
+import useCrudItems from "../hooks/useCrudItems";
 
 export function InspectionTable({ data }) {
   const [viewItemModal, setViewItemModal] = useState(false);
@@ -19,6 +20,7 @@ export function InspectionTable({ data }) {
   const [currentStatus, setCurrentStatus] = useState("");
 
   const { handleUpdateStatus } = useCrudRequest();
+  const { handleAddItem } = useCrudItems();
 
   const filterData = data.filter((item) => {
     if (item.status == "Fully Delivered") {
@@ -30,6 +32,14 @@ export function InspectionTable({ data }) {
     setConfirmModal(true);
     setCurrentItem(item);
     setCurrentStatus(status);
+  };
+
+  const handleCompleted = () => {
+    currentItem.items.map((item) => {
+      handleAddItem(item, currentItem.category);
+    });
+
+    toast.success("Successfully Added Items");
   };
 
   return (
@@ -95,6 +105,7 @@ export function InspectionTable({ data }) {
         event={() => {
           handleUpdateStatus(currentItem.id, currentStatus);
           setConfirmModal(false);
+          handleCompleted();
         }}
         open={confirmModal}
         handleClose={() => setConfirmModal(false)}

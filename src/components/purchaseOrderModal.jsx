@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { HiDownload } from "react-icons/hi";
 import { usePDF } from "react-to-pdf";
 import PurchaseOrderRowDummy from "./purchaseOrderDummyRow";
+import moment from "moment";
 
 const PurchaseOrderModal = ({ title, size, open, handleClose, data }) => {
   const { toPDF, targetRef } = usePDF({ filename: "ris.pdf" });
@@ -32,7 +33,7 @@ const PurchaseOrderModal = ({ title, size, open, handleClose, data }) => {
           <div className="basis-4/12 border border-slate-950">
             <div className="flex flex-col ml-3">
               <h1>P.0 No: {data.poNumber} </h1>
-              <h1>Date:</h1>
+              <h1>Date: {moment(Date().toString()).format("LLL")}</h1>
               <h1>Mode of Procurement:</h1>
             </div>
           </div>
