@@ -51,6 +51,7 @@ const PurchaseOrder = ({ cart }) => {
   const handleSubmit = () => {
     handleAddRequest(forms, cartSupply);
     setSupplyModal(false);
+    setCartSupply([]);
     toast.success("Successfully Requested");
   };
 

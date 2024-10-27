@@ -117,6 +117,7 @@ export function DeliveryTable({ data }) {
                   </Table.Cell>
                   <Table.Cell className="bg-slate-800  text-white">
                     <Button
+                      color={"warning"}
                       onClick={() => {
                         setCurrentItem(item);
                         setViewItemModal(true);
@@ -163,6 +164,13 @@ export function DeliveryTable({ data }) {
                         }}
                       >
                         Update as Fully Delivered
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        onClick={() => {
+                          handleUpdateStatus(item.id, "Rejected");
+                        }}
+                      >
+                        Reject
                       </Dropdown.Item>
                     </Dropdown>
                   </Table.Cell>

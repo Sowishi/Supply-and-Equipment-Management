@@ -1,21 +1,26 @@
 import { Button, Dropdown, Table, Tooltip } from "flowbite-react";
-
+import { HiOutlineCog, HiOutlinePlusCircle, HiTrash } from "react-icons/hi";
+import { useSemStore } from "../zustand/store";
+import { toast } from "react-toastify";
 import moment from "moment";
 import { useState } from "react";
 import SemModal from "./semModal";
-import { ConfirmationModal } from "./confirmationModal.jsx";
 import PurchaseOrderModal from "./purchaseOrderModal";
 import useCrudRequest from "../hooks/useCrudRequest";
-import { toast } from "react-toastify";
+import DeliveryModal from "./deliveryModal";
 
-export function SemSupplyTable({ data }) {
+export function InspectionTable({ data }) {
   const [viewItemModal, setViewItemModal] = useState(false);
   const [currentItem, setCurrentItem] = useState([]);
   const [poModal, setPoModal] = useState(false);
 
-  const [confirmDelete, setConfirmDelete] = useState(false);
+  const { handleUpdateStatus } = useCrudRequest();
 
-  const { handleDeleteRequest } = useCrudRequest();
+  const filterData = data.filter((item) => {
+    if (item.status == "Fully Delivered") {
+      return item;
+    }
+  });
 
   return (
     <div className="overflow-x-auto ">
@@ -67,22 +72,12 @@ export function SemSupplyTable({ data }) {
         </div>
       </SemModal>
 
-      <PurchaseOrderModal
+      <DeliveryModal
         handleClose={() => setPoModal(false)}
         title={`Purchase Order Form`}
         size={"6xl"}
         open={poModal}
         data={currentItem}
-      />
-
-      <ConfirmationModal
-        event={() => {
-          handleDeleteRequest(currentItem.id);
-          setConfirmDelete(false);
-          toast.success("Successfully Deleted Request");
-        }}
-        handleClose={() => setConfirmDelete(false)}
-        open={confirmDelete}
       />
 
       {data && (
@@ -115,7 +110,7 @@ export function SemSupplyTable({ data }) {
             </Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            {data.map((item, index) => {
+            {filterData.map((item, index) => {
               const date = moment(item?.createdAt?.toDate()).format("LLL");
 
               return (
@@ -156,29 +151,17 @@ export function SemSupplyTable({ data }) {
                     <Dropdown placement="left" label="Action" title="Action">
                       <Dropdown.Item
                         onClick={() => {
-                          setCurrentItem(item);
-                          setPoModal(true);
+                          handleUpdateStatus(item.id, "Completed");
                         }}
                       >
-                        View Purchase Order
+                        Completed
                       </Dropdown.Item>
-                      {item.status == "Completed" && (
-                        <Dropdown.Item
-                          onClick={() => {
-                            setCurrentItem(item);
-                            setPoModal(true);
-                          }}
-                        >
-                          View Inspection and Acceptance Report
-                        </Dropdown.Item>
-                      )}
                       <Dropdown.Item
                         onClick={() => {
-                          setConfirmDelete(true);
-                          setCurrentItem(item);
+                          handleUpdateStatus(item.id, "Rejected");
                         }}
                       >
-                        Delete Request
+                        Rejected
                       </Dropdown.Item>
                     </Dropdown>
                   </Table.Cell>

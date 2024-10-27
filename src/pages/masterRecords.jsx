@@ -12,6 +12,7 @@ import { useSemStore } from "../zustand/store";
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import PurchaseOrder from "./purchaseOrder";
 import Delivery from "./delivery";
+import Inspection from "./inspection";
 
 const MasterRecords = () => {
   const { currentUser } = useSemStore();
@@ -38,13 +39,15 @@ const MasterRecords = () => {
       {isAdmin && (
         <div className="container mx-auto">
           <Tabs variant="pills" className="mx-5">
-            <Tabs.Item title="Transaction" icon={HiAnnotation}>
+            <Tabs.Item title="Purchase Order" icon={HiAnnotation}>
               <PurchaseOrder />
             </Tabs.Item>
             <Tabs.Item title="Delivery" icon={HiAnnotation}>
               <Delivery />
             </Tabs.Item>
-            <Tabs.Item title="Inspection" icon={HiMagnifyingGlass}></Tabs.Item>
+            <Tabs.Item title="Inspection" icon={HiMagnifyingGlass}>
+              <Inspection />
+            </Tabs.Item>
 
             <Tabs.Item title="Equipments" icon={HiViewGrid}></Tabs.Item>
             <Tabs.Item title="Supplies" icon={HiMagnifyingGlass}></Tabs.Item>

@@ -1,7 +1,7 @@
 import useCrudRequest from "../hooks/useCrudRequest";
-import { DeliveryTable } from "../components/deliveryTable";
+import { InspectionTable } from "../components/inspectionTable";
 
-const Delivery = ({ cart }) => {
+const Inspection = ({ cart }) => {
   const { data } = useCrudRequest();
 
   return (
@@ -9,18 +9,18 @@ const Delivery = ({ cart }) => {
       <div className="wrapper p-0 lg:p-5">
         <div className="wrapper mb-5">
           <h1 className="text-white font-bold text-3xl">
-            Delivery / Update Delivery Status
+            Inspection & Acceptance
           </h1>
           <p className="text-white">
-            This is where you can see the delivery receipts & update the
-            delivery status
+            This is where you can inspect the fully delivered items and update
+            the status
           </p>
         </div>
 
-        <DeliveryTable data={data} />
+        <InspectionTable data={data} />
       </div>
     </>
   );
 };
 
-export default Delivery;
+export default Inspection;
