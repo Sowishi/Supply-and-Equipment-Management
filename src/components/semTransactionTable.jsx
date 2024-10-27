@@ -227,10 +227,10 @@ const SemTransactionTable = ({
                     <Table.Cell className="bg-slate-800  text-white ">
                       <div className="wrapper flex">
                         <Button
-                          // disabled={
-                          //   item.status == "Approve" ||
-                          //   item.status === "Rejected"
-                          // }
+                          disabled={
+                            item.status == "Approve" ||
+                            item.status === "Rejected"
+                          }
                           onClick={() => {
                             handleDecrementQuantity(item);
                             approveTransaction(item.id, currentUser, item.item);
