@@ -9,6 +9,7 @@ import PurchaseOrderModal from "./purchaseOrderModal";
 import useCrudRequest from "../hooks/useCrudRequest";
 import DeliveryModal from "./deliveryModal";
 import ConfirmationModal from "./confirmationModal";
+import InspectionModal from "./inspectionModal";
 
 export function InspectionTable({ data }) {
   const [viewItemModal, setViewItemModal] = useState(false);
@@ -81,7 +82,7 @@ export function InspectionTable({ data }) {
         </div>
       </SemModal>
 
-      <DeliveryModal
+      <InspectionModal
         handleClose={() => setPoModal(false)}
         title={`Purchase Order Form`}
         size={"6xl"}
@@ -168,6 +169,13 @@ export function InspectionTable({ data }) {
 
                   <Table.Cell className="bg-slate-800  text-white">
                     <Dropdown placement="left" label="Action" title="Action">
+                      <Dropdown.Item
+                        onClick={() => {
+                          setPoModal(true);
+                        }}
+                      >
+                        View Inspection & Acceptance Report
+                      </Dropdown.Item>
                       <Dropdown.Item
                         onClick={() => {
                           handleStatusChange(item, "Completed");
