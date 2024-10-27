@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import RisFormRow from "../components/risFormRow";
 import RisFormDummyRow from "../components/risFormDummyRow";
 import RisFormModal from "../components/risFormModal";
+import cn from "../assets/cnsc front.jpeg";
 
 const DashboardLayout = ({ children }) => {
   const [isOpen, setOpen] = useState(false);
@@ -31,7 +32,14 @@ const DashboardLayout = ({ children }) => {
   const isEquipmentCartEmpty = cartEquipment.length <= 0;
 
   return (
-    <div className="w-full min-h-screen bg-slate-950 pb-10">
+    <div
+      style={{
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.7)), url(${cn})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+      className="w-full min-h-screen bg-slate-950 pb-10"
+    >
       <SemModal
         dark={true}
         title={`Your Item Cart`}

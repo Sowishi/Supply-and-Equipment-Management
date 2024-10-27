@@ -36,7 +36,7 @@ export function InspectionTable({ data }) {
 
   const handleCompleted = () => {
     currentItem.items.map((item) => {
-      handleAddItem(item, currentItem.category);
+      handleAddItem(item, currentItem);
     });
 
     toast.success("Successfully Added Items");

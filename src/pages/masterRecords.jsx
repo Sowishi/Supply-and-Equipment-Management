@@ -13,6 +13,8 @@ import { HiMagnifyingGlass } from "react-icons/hi2";
 import PurchaseOrder from "./purchaseOrder";
 import Delivery from "./delivery";
 import Inspection from "./inspection";
+import Supply from "./supply";
+import EquipmentPage from "./equipmentPage";
 
 const MasterRecords = () => {
   const { currentUser } = useSemStore();
@@ -49,7 +51,9 @@ const MasterRecords = () => {
               <Inspection />
             </Tabs.Item>
 
-            <Tabs.Item title="Equipments" icon={HiViewGrid}></Tabs.Item>
+            <Tabs.Item title="Equipments" icon={HiViewGrid}>
+              <EquipmentPage />
+            </Tabs.Item>
             <Tabs.Item title="Supplies" icon={HiMagnifyingGlass}></Tabs.Item>
             <Tabs.Item title="Office" icon={HiOfficeBuilding}>
               <Offices />
