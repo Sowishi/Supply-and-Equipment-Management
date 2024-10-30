@@ -75,7 +75,7 @@ export function DeliveryTable({ data }) {
 
       <DeliveryModal
         handleClose={() => setPoModal(false)}
-        title={`Purchase Order Form`}
+        title={`Delivery Receipts Form`}
         size={"6xl"}
         open={poModal}
         data={currentItem}

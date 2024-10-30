@@ -42,6 +42,8 @@ export function InspectionTable({ data }) {
     toast.success("Successfully Added Items");
   };
 
+  console.log(currentItem);
+
   return (
     <div className="overflow-x-auto ">
       <SemModal
@@ -94,7 +96,7 @@ export function InspectionTable({ data }) {
 
       <InspectionModal
         handleClose={() => setPoModal(false)}
-        title={`Purchase Order Form`}
+        title={`Inspection & Acceptance Report`}
         size={"6xl"}
         open={poModal}
         data={currentItem}
@@ -183,6 +185,7 @@ export function InspectionTable({ data }) {
                       <Dropdown.Item
                         onClick={() => {
                           setPoModal(true);
+                          setCurrentItem(item);
                         }}
                       >
                         View Inspection & Acceptance Report
