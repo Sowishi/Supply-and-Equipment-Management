@@ -7,6 +7,7 @@ import { useSemStore } from "./zustand/store";
 import Transaction from "./pages/transcation";
 import MasterRecords from "./pages/masterRecords";
 import ViewTransaction from "./pages/view-transaction";
+import UsersManagement from "./pages/usersManagement";
 
 function App() {
   const { currentUser } = useSemStore();
@@ -23,6 +24,10 @@ function App() {
         <Route
           path="/transaction"
           element={currentUser ? <Transaction /> : <Login />}
+        />
+        <Route
+          path="/users-management"
+          element={currentUser ? <UsersManagement /> : <Login />}
         />
 
         <Route path="/view-transaction/:id" element={<ViewTransaction />} />

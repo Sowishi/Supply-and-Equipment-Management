@@ -11,6 +11,7 @@ import {
   HiShoppingBag,
   HiTable,
   HiUser,
+  HiUsers,
   HiViewBoards,
   HiViewGrid,
 } from "react-icons/hi";
@@ -39,6 +40,11 @@ const SemSidebar = ({ isOpen, handleClose }) => {
               <Link to={"/master-records"}>
                 <Sidebar.Item className="my-3" icon={HiFolder}>
                   Master Records
+                </Sidebar.Item>
+              </Link>
+              <Link to={"/users-management"}>
+                <Sidebar.Item className="my-3" icon={HiUsers}>
+                  Users Management
                 </Sidebar.Item>
               </Link>
               <Sidebar.Item

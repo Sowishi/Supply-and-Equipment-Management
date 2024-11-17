@@ -3,7 +3,6 @@ import {
   HiCalendar,
   HiLocationMarker,
   HiLockClosed,
-  HiLogin,
   HiMail,
   HiOfficeBuilding,
   HiPhone,
@@ -15,7 +14,7 @@ import {
 import SemInput from "../components/semInput";
 import SemSelect from "../components/semSelect";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import SemTitle from "../components/semTitle";
 import useAddUser from "../hooks/useAddUser";
 import { toast } from "react-toastify";
@@ -37,33 +36,88 @@ const Signup = () => {
     office: "",
   });
 
-  const [error, setError] = useState();
-
-  // Hooks
+  const [errors, setErrors] = useState({});
   const { addUser } = useAddUser();
   const { offices } = useGetOffices();
   const navigation = useNavigate();
 
+  const validateField = (name, value) => {
+    let errorMsg = "";
+
+    switch (name) {
+      case "firstName":
+      case "lastName":
+        if (!value) {
+          errorMsg = `${
+            name === "firstName" ? "First" : "Last"
+          } Name is required.`;
+        }
+        break;
+      case "contact":
+        if (!/^\d{0,11}$/.test(value)) {
+          errorMsg = "Contact number must be numeric and up to 11 digits.";
+        } else if (value.length !== 11) {
+          errorMsg = "Contact number must be exactly 11 digits.";
+        }
+        break;
+      case "email":
+        if (value && !/\S+@\S+\.\S+/.test(value)) {
+          errorMsg = "Please enter a valid email address.";
+        }
+        break;
+      case "password":
+        if (value && value.length < 6) {
+          errorMsg = "Password must be at least 6 characters.";
+        }
+        break;
+      case "confirmPassword":
+        if (value !== forms.password) {
+          errorMsg = "Passwords do not match.";
+        }
+        break;
+      default:
+        break;
+    }
+
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: errorMsg,
+    }));
+  };
+
   const handleUpdateForm = (event) => {
     const { name, value } = event.target;
-    const newForms = { ...forms, [name]: value };
-    setForms(newForms);
+
+    // Perform validation for the specific field being updated
+    validateField(name, value);
+
+    // Restrict contact number to 11 characters
+    if (name === "contact" && value.length > 11) return;
+
+    setForms((prevForms) => ({ ...prevForms, [name]: value }));
   };
 
   const handleSubmitForm = (event) => {
     event.preventDefault();
+
+    // Check for any remaining validation errors
+    const formErrors = Object.values(errors).filter((error) => error);
+    if (formErrors.length > 0) {
+      toast.error("Please fix the form errors before submitting.");
+      return;
+    }
+
+    // Submit the form if no validation errors
     const res = addUser(forms);
-    setError(res);
     if (res.error) {
       toast.error(res.message);
-    }
-    if (!res.error) {
+    } else {
       toast.promise(new Promise((resolve) => setTimeout(resolve, 3000)), {
         pending: "Signing up, please wait...",
         success: res.message,
       });
       setTimeout(() => {
-        navigation("/");
+        navigation("/users-management");
       }, 4000);
     }
   };
@@ -84,10 +138,14 @@ const Signup = () => {
               icon={HiUser}
               event={handleUpdateForm}
               name={"firstName"}
+              error={errors.firstName}
             />
+            {errors.firstName && (
+              <p className="text-red-500 text-sm">{errors.firstName}</p>
+            )}
             <SemInput
               id={"middleName"}
-              label={"Middle Name"}
+              label={"Middle Name (Optional)"}
               placeholder={"Enter your middle name"}
               icon={HiUser}
               event={handleUpdateForm}
@@ -100,7 +158,11 @@ const Signup = () => {
               icon={HiUser}
               event={handleUpdateForm}
               name={"lastName"}
+              error={errors.lastName}
             />
+            {errors.lastName && (
+              <p className="text-red-500 text-sm">{errors.lastName}</p>
+            )}
             <SemInput
               id={"birthDate"}
               label={"Birth Date"}
@@ -117,7 +179,12 @@ const Signup = () => {
               placeholder={"Enter your contact number"}
               event={handleUpdateForm}
               name={"contact"}
+              maxLength={11}
+              error={errors.contact}
             />
+            {errors.contact && (
+              <p className="text-red-500 text-sm">{errors.contact}</p>
+            )}
           </div>
           <div className="basis-full lg:basis-4/12 mr-5">
             <SemSelect
@@ -137,7 +204,11 @@ const Signup = () => {
               icon={HiMail}
               event={handleUpdateForm}
               name="email"
+              error={errors.email}
             />
+            {errors.email && (
+              <p className="text-red-500 text-sm">{errors.email}</p>
+            )}
             <SemInput
               id={"address"}
               label={"Address"}
@@ -154,8 +225,12 @@ const Signup = () => {
               type={"password"}
               event={handleUpdateForm}
               name="password"
-              color={error?.error ? "failure" : "info"}
+              color={errors.password ? "failure" : "info"}
+              error={errors.password}
             />
+            {errors.password && (
+              <p className="text-red-500 text-sm">{errors.password}</p>
+            )}
             <SemInput
               id={"confirmPassword"}
               label={"Confirm Password"}
@@ -164,8 +239,12 @@ const Signup = () => {
               type={"password"}
               event={handleUpdateForm}
               name="confirmPassword"
-              color={error?.error ? "failure" : "info"}
+              color={errors.confirmPassword ? "failure" : "info"}
+              error={errors.confirmPassword}
             />
+            {errors.confirmPassword && (
+              <p className="text-red-500 text-sm">{errors.confirmPassword}</p>
+            )}
           </div>
           <div className="basis-full lg:basis-4/12 mr-5">
             <SemSelect
@@ -180,7 +259,7 @@ const Signup = () => {
               event={handleUpdateForm}
               name="role"
             />
-            {forms.role == "Department Supply Coordinator" && (
+            {forms.role === "Department Supply Coordinator" && (
               <SemSelect
                 offices={true}
                 label={"Offices"}
@@ -202,12 +281,6 @@ const Signup = () => {
                 Create Account
               </Button>
               <HR.Text />
-              <Link to={"/"}>
-                <Button gradientMonochrome="success" className="w-full">
-                  <HiLogin className="mr-2 h-5 w-5" />
-                  Login
-                </Button>
-              </Link>
             </div>
           </div>
         </form>

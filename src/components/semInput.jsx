@@ -26,7 +26,6 @@ const SemInput = ({
         icon={icon}
         type={type}
         placeholder={placeholder}
-        required
         color={color}
         value={value}
       />
