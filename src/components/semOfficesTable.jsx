@@ -18,9 +18,6 @@ export function SemOfficesTable({
         <Table striped>
           <Table.Head>
             <Table.HeadCell className="bg-white text-gray-900">
-              Office ID
-            </Table.HeadCell>
-            <Table.HeadCell className="bg-white text-gray-900">
               Office Name
             </Table.HeadCell>
             <Table.HeadCell className="bg-white text-gray-900">
@@ -37,9 +34,6 @@ export function SemOfficesTable({
 
               return (
                 <Table.Row key={item.id}>
-                  <Table.Cell className="bg-white text-gray-900">
-                    {item.id}
-                  </Table.Cell>{" "}
                   <Table.Cell className="bg-white text-gray-900 font-bold">
                     {item.officeName}
                   </Table.Cell>{" "}
