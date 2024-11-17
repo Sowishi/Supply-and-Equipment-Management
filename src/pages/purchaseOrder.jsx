@@ -24,7 +24,7 @@ const PurchaseOrder = ({ cart }) => {
   const [forms, setForms] = useState({
     poNumber: "",
     supplier: "",
-    fundCluster: "IGF",
+    fundCluster: "Regular Agency Fund",
     category: "Supply",
   });
 
@@ -53,7 +53,6 @@ const PurchaseOrder = ({ cart }) => {
     handleAddRequest(forms, cartSupply);
     setSupplyModal(false);
     setCartSupply([]);
-    toast.success("Successfully Requested");
   };
 
   return (
@@ -95,7 +94,12 @@ const PurchaseOrder = ({ cart }) => {
               event={handleChange}
               name={"fundCluter"}
               label={"Fund Cluster"}
-              data={["IGF", "RAF", "BRF", "TR"]}
+              data={[
+                "Regular Agency Fund",
+                "Internally Generated Fund",
+                "Business Related Fund",
+                "Trust Receipts",
+              ]}
             />
             <SemSelect
               event={handleChange}
