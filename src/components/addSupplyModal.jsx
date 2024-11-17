@@ -25,8 +25,10 @@ const AddSupplyModal = ({
   };
 
   const handleSubmit = () => {
+    // Generate a random 4-digit number for ID
+    const randomId = Math.floor(1000 + Math.random() * 9000); // Ensures a 4-digit number
     const cartSupplyCopy = [...cartSupply];
-    cartSupplyCopy.push(forms);
+    cartSupplyCopy.push({ ...forms, id: randomId.toString() }); // Add random ID to the form data
     setCartSupply(cartSupplyCopy);
     handleClose();
   };
@@ -38,11 +40,6 @@ const AddSupplyModal = ({
       open={open}
       handleClose={handleClose}
     >
-      <SemInput
-        event={handleChange}
-        name={"id"}
-        label={"Stock Property Number"}
-      />
       <SemInput
         event={handleChange}
         name={"description"}

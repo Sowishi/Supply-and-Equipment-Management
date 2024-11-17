@@ -34,11 +34,11 @@ const useCrudRequest = () => {
 
   const handleAddRequest = async (forms, cartSupply) => {
     try {
-      // Step 1: Validate PO Number
       let basePoNumber = forms.poNumber;
       let suffix = "";
       let attempts = 0;
 
+      // Extract the base PO number and the current suffix (if any)
       const match = forms.poNumber.match(/^(.+?)(?:-([A-Z]))?$/); // Matches base and optional suffix
       if (match) {
         basePoNumber = match[1]; // Base PO number (e.g., "1738")
@@ -46,6 +46,7 @@ const useCrudRequest = () => {
       }
 
       while (true) {
+        // Query Firestore for documents with the current PO number
         const currentPoNumber = suffix
           ? `${basePoNumber}-${suffix}`
           : basePoNumber;
@@ -53,10 +54,12 @@ const useCrudRequest = () => {
         const querySnapshot = await getDocs(q);
 
         if (querySnapshot.empty) {
+          // If no match found, use this PO number
           basePoNumber = currentPoNumber;
           break;
         }
 
+        // If there's a match, calculate the next suffix
         attempts++;
         suffix = String.fromCharCode(64 + attempts); // Generate suffix as A, B, etc.
 
@@ -67,24 +70,7 @@ const useCrudRequest = () => {
         }
       }
 
-      // Step 2: Validate Property Numbers
-      for (const item of cartSupply) {
-        const propertyQuery = query(
-          colRef,
-          where("items", "array-contains", {
-            propertyNumber: item.propertyNumber,
-          })
-        );
-        const propertySnapshot = await getDocs(propertyQuery);
-
-        if (!propertySnapshot.empty) {
-          throw new Error(
-            `Property number ${item.propertyNumber} already exists in another request.`
-          );
-        }
-      }
-
-      // Step 3: Add the Document
+      // Add the document with the unique PO number
       await addDoc(colRef, {
         poNumber: basePoNumber,
         supplier: forms.supplier,
