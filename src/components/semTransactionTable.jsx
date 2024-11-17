@@ -75,31 +75,31 @@ const SemTransactionTable = ({
       {data && (
         <Table>
           <Table.Head>
-            <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
+            <Table.HeadCell className="bg-white text-gray-900">
               User
             </Table.HeadCell>
-            <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
+            <Table.HeadCell className="bg-white text-gray-900">
               Office Name
             </Table.HeadCell>
-            <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
+            <Table.HeadCell className="bg-white text-gray-900">
               Category
             </Table.HeadCell>
-            <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
+            <Table.HeadCell className="bg-white text-gray-900">
               Review By
             </Table.HeadCell>
-            <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
+            <Table.HeadCell className="bg-white text-gray-900">
               Created At
             </Table.HeadCell>
-            <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
+            <Table.HeadCell className="bg-white text-gray-900">
               Status
             </Table.HeadCell>
 
-            <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
+            <Table.HeadCell className="bg-white text-gray-900">
               Form
             </Table.HeadCell>
 
             {isAdmin && (
-              <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
+              <Table.HeadCell className="bg-white text-gray-900">
                 Action
               </Table.HeadCell>
             )}
@@ -121,28 +121,28 @@ const SemTransactionTable = ({
 
               return (
                 <Table.Row key={item.id}>
-                  <Table.Cell className="bg-slate-800  text-white">
+                  <Table.Cell className="bg-white text-gray-900">
                     {user.firstName + " " + user.lastName}
                   </Table.Cell>
-                  <Table.Cell className="bg-slate-800  text-white">
+                  <Table.Cell className="bg-white text-gray-900">
                     {user.office}
                   </Table.Cell>
-                  <Table.Cell className="bg-slate-800  text-white">
+                  <Table.Cell className="bg-white text-gray-900">
                     {item.category}
                   </Table.Cell>
-                  <Table.Cell className="bg-slate-800  text-white">
+                  <Table.Cell className="bg-white text-gray-900">
                     {item.reviewBy ? item.reviewBy : "Waiting for approval"}
                   </Table.Cell>
-                  <Table.Cell className="bg-slate-800  text-white">
+                  <Table.Cell className="bg-white text-gray-900">
                     {date}
                   </Table.Cell>
-                  <Table.Cell className="bg-slate-800  text-white">
+                  <Table.Cell className="bg-white text-gray-900">
                     <Badge color={badgeColor} size={"lg"}>
                       {item.status}
                     </Badge>
                   </Table.Cell>
 
-                  <Table.Cell className="bg-slate-800  text-white">
+                  <Table.Cell className="bg-white text-gray-900">
                     <Dropdown
                       placement="left"
                       label="Forms"
@@ -166,7 +166,7 @@ const SemTransactionTable = ({
                         placement="left"
                         content={
                           item.status !== "Approve"
-                            ? "Your document is not approve yet"
+                            ? "Your document is not approved yet"
                             : "You can now view your ICS form"
                         }
                       >
@@ -184,47 +184,42 @@ const SemTransactionTable = ({
                               setIcsForm(true);
                             }}
                           >
-                            {" "}
                             View ICS Form
                           </Dropdown.Item>
                         )}
 
                         {item.category == "Equipment" && (
-                          <>
-                            <Dropdown.Item
-                              style={{
-                                cursor:
-                                  item.status !== "Approve"
-                                    ? "not-allowed"
-                                    : "pointer",
-                              }}
-                              disabled={item.status !== "Approve"}
-                              onClick={() => {
-                                setCurrentTransaction(item);
-                                setParForm(true);
-                              }}
-                            >
-                              View PAR Form
-                            </Dropdown.Item>
-                          </>
+                          <Dropdown.Item
+                            style={{
+                              cursor:
+                                item.status !== "Approve"
+                                  ? "not-allowed"
+                                  : "pointer",
+                            }}
+                            disabled={item.status !== "Approve"}
+                            onClick={() => {
+                              setCurrentTransaction(item);
+                              setParForm(true);
+                            }}
+                          >
+                            View PAR Form
+                          </Dropdown.Item>
                         )}
                       </Tooltip>
                       {item.category == "Equipment" && (
-                        <>
-                          <Dropdown.Item
-                            onClick={() => {
-                              setSelected(item.id);
-                              setQrModal(true);
-                            }}
-                          >
-                            View QR Code
-                          </Dropdown.Item>
-                        </>
+                        <Dropdown.Item
+                          onClick={() => {
+                            setSelected(item.id);
+                            setQrModal(true);
+                          }}
+                        >
+                          View QR Code
+                        </Dropdown.Item>
                       )}
                     </Dropdown>
                   </Table.Cell>
                   {isAdmin && (
-                    <Table.Cell className="bg-slate-800  text-white ">
+                    <Table.Cell className="bg-white text-gray-900">
                       <div className="wrapper flex">
                         <Button
                           disabled={

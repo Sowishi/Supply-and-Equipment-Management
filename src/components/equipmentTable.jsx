@@ -5,11 +5,7 @@ import { useSemStore } from "../zustand/store";
 import SemInput from "./semInput";
 
 export function EquipmentTable({ data, isClient, isCart, setErrorEquipment }) {
-  const filterData = data.filter((item) => {
-    if (item.category == "Equipment") {
-      return item;
-    }
-  });
+  const filterData = data.filter((item) => item.category === "Equipment");
 
   const { setCartEquipment, cartEquipment } = useSemStore();
 
@@ -21,23 +17,17 @@ export function EquipmentTable({ data, isClient, isCart, setErrorEquipment }) {
 
   const handlelDeleteCart = (data) => {
     const cartEquipmentCopy = [...cartEquipment];
-    const output = cartEquipmentCopy.filter((item) => {
-      if (item.docID !== data.docID) {
-        return item;
-      }
-    });
+    const output = cartEquipmentCopy.filter(
+      (item) => item.docID !== data.docID
+    );
     setCartEquipment(output);
   };
 
   const handleIncrement = (data) => {
     const cartEquipmentCopy = [...cartEquipment];
     cartEquipmentCopy.map((item) => {
-      if (item.docID == data.docID) {
-        if (item.borrowedQuantity == undefined) {
-          item.borrowedQuantity = 1;
-        } else {
-          item.borrowedQuantity = parseInt(item.borrowedQuantity) + 1;
-        }
+      if (item.docID === data.docID) {
+        item.borrowedQuantity = (item.borrowedQuantity || 0) + 1;
 
         if (item.borrowedQuantity > data.quantity) {
           setErrorEquipment(true);
@@ -48,11 +38,13 @@ export function EquipmentTable({ data, isClient, isCart, setErrorEquipment }) {
     });
     setCartEquipment(cartEquipmentCopy);
   };
+
   const handleDecrement = (data) => {
     const cartEquipmentCopy = [...cartEquipment];
     cartEquipmentCopy.map((item) => {
-      if (item.docID == data.docID) {
-        item.borrowedQuantity = parseInt(item.borrowedQuantity) - 1;
+      if (item.docID === data.docID) {
+        item.borrowedQuantity = (item.borrowedQuantity || 1) - 1;
+
         if (item.borrowedQuantity > data.quantity) {
           setErrorEquipment(true);
         } else {
@@ -62,36 +54,37 @@ export function EquipmentTable({ data, isClient, isCart, setErrorEquipment }) {
     });
     setCartEquipment(cartEquipmentCopy);
   };
+
   return (
-    <div className="overflow-x-auto ">
+    <div className="overflow-x-auto">
       {data && (
         <Table striped hoverable>
           <Table.Head>
-            <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
+            <Table.HeadCell className="bg-gray-100 text-gray-800">
               Stock / Property No.
             </Table.HeadCell>
-            <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
+            <Table.HeadCell className="bg-gray-100 text-gray-800">
               Description
             </Table.HeadCell>
-            <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
+            <Table.HeadCell className="bg-gray-100 text-gray-800">
               Unit
             </Table.HeadCell>
-            <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
+            <Table.HeadCell className="bg-gray-100 text-gray-800">
               Quantity
             </Table.HeadCell>
-            <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
+            <Table.HeadCell className="bg-gray-100 text-gray-800">
               Supplier
             </Table.HeadCell>
-            <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
+            <Table.HeadCell className="bg-gray-100 text-gray-800">
               Date
             </Table.HeadCell>
             {isClient && (
-              <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500"></Table.HeadCell>
+              <Table.HeadCell className="bg-gray-100"></Table.HeadCell>
             )}
             {isCart && (
               <>
-                <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500"></Table.HeadCell>
-                <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500"></Table.HeadCell>
+                <Table.HeadCell className="bg-gray-100"></Table.HeadCell>
+                <Table.HeadCell className="bg-gray-100"></Table.HeadCell>
               </>
             )}
           </Table.Head>
@@ -101,39 +94,38 @@ export function EquipmentTable({ data, isClient, isCart, setErrorEquipment }) {
 
               return (
                 <Table.Row key={item.id}>
-                  <Table.Cell className="bg-slate-800  text-white">
+                  <Table.Cell className="bg-white text-gray-800">
                     {item.id}
                   </Table.Cell>
-                  <Table.Cell className="bg-slate-800  text-white font-bold">
+                  <Table.Cell className="bg-white text-gray-800 font-bold">
                     {item.description}
                   </Table.Cell>
-                  <Table.Cell className="bg-slate-800  text-white font-bold">
+                  <Table.Cell className="bg-white text-gray-800 font-bold">
                     {item.unit}
                   </Table.Cell>
-                  <Table.Cell className="bg-slate-800  text-white font-bold">
+                  <Table.Cell className="bg-white text-gray-800 font-bold">
                     {item.quantity}
                   </Table.Cell>
-                  <Table.Cell className="bg-slate-800  text-white font-bold">
+                  <Table.Cell className="bg-white text-gray-800 font-bold">
                     {item.supplier}
                   </Table.Cell>
-
-                  <Table.Cell className="bg-slate-800  text-white font-bold">
+                  <Table.Cell className="bg-white text-gray-800 font-bold">
                     {date}
                   </Table.Cell>
                   {isClient && (
-                    <Table.Cell className="bg-slate-800  text-white font-bold">
+                    <Table.Cell className="bg-white text-gray-800 font-bold">
                       <Button
                         onClick={() => handleAddCart(item)}
                         gradientMonochrome="success"
                       >
-                        <HiPlusCircle color="white" className="mr-2 h-5 w-5" />
+                        <HiPlusCircle color="gray" className="mr-2 h-5 w-5" />
                         ADD
                       </Button>
                     </Table.Cell>
                   )}
                   {isCart && (
-                    <Table.Cell className="bg-slate-800  text-white ">
-                      <div className="flex justify-center items-center ">
+                    <Table.Cell className="bg-white text-gray-800">
+                      <div className="flex justify-center items-center">
                         <Button
                           className="mx-3"
                           disabled={item.borrowedQuantity <= 1}
@@ -141,14 +133,12 @@ export function EquipmentTable({ data, isClient, isCart, setErrorEquipment }) {
                         >
                           -
                         </Button>
-
                         <SemInput
                           className="mx-3"
-                          value={
-                            item.borrowedQuantity ? item.borrowedQuantity : 0
-                          }
+                          value={item.borrowedQuantity || 0}
                           event={(event) => {
-                            if (parseInt(event.target.value) > item.quantity) {
+                            const value = parseInt(event.target.value);
+                            if (value > item.quantity) {
                               setErrorEquipment(true);
                             } else {
                               setErrorEquipment(false);
@@ -156,21 +146,15 @@ export function EquipmentTable({ data, isClient, isCart, setErrorEquipment }) {
 
                             const cartEquipmentCopy = [...cartEquipment];
                             cartEquipmentCopy.map((supply) => {
-                              if (supply.docID == item.docID) {
-                                if (event.target.value == "") {
-                                  supply.borrowedQuantity = parseInt(0);
-                                } else {
-                                  supply.borrowedQuantity = parseInt(
-                                    event.target.value
-                                  );
-                                }
+                              if (supply.docID === item.docID) {
+                                supply.borrowedQuantity = isNaN(value)
+                                  ? 0
+                                  : value;
                               }
                             });
-
                             setCartEquipment(cartEquipmentCopy);
                           }}
                         />
-
                         <Button
                           className="mx-3"
                           onClick={() => handleIncrement(item)}
@@ -181,7 +165,7 @@ export function EquipmentTable({ data, isClient, isCart, setErrorEquipment }) {
                     </Table.Cell>
                   )}
                   {isCart && (
-                    <Table.Cell className="bg-slate-800  text-white font-bold">
+                    <Table.Cell className="bg-white text-gray-800 font-bold">
                       <Button
                         onClick={() => handlelDeleteCart(item)}
                         gradientMonochrome="failure"

@@ -17,16 +17,16 @@ export function SemOfficesTable({
       {data && (
         <Table striped>
           <Table.Head>
-            <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
+            <Table.HeadCell className="bg-white text-gray-900">
               Office ID
             </Table.HeadCell>
-            <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
+            <Table.HeadCell className="bg-white text-gray-900">
               Office Name
             </Table.HeadCell>
-            <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
+            <Table.HeadCell className="bg-white text-gray-900">
               Created At
             </Table.HeadCell>
-            <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
+            <Table.HeadCell className="bg-white text-gray-900">
               Action
             </Table.HeadCell>
           </Table.Head>
@@ -37,17 +37,17 @@ export function SemOfficesTable({
 
               return (
                 <Table.Row key={item.id}>
-                  <Table.Cell className="bg-slate-800  text-white">
+                  <Table.Cell className="bg-white text-gray-900">
                     {item.id}
                   </Table.Cell>{" "}
-                  <Table.Cell className="bg-slate-800  text-white font-bold">
+                  <Table.Cell className="bg-white text-gray-900 font-bold">
                     {item.officeName}
                   </Table.Cell>{" "}
-                  <Table.Cell className="bg-slate-800  text-white">
+                  <Table.Cell className="bg-white text-gray-900">
                     {date}
                   </Table.Cell>{" "}
                   {isAdmin && (
-                    <Table.Cell className="bg-slate-800  text-white">
+                    <Table.Cell className="bg-white text-gray-900">
                       <div className="flex flex-row justify-center items-center">
                         <Tooltip content="Update office name">
                           <Button
@@ -60,7 +60,7 @@ export function SemOfficesTable({
                             gradientMonochrome="info"
                           >
                             <HiOutlineCog
-                              color="white"
+                              color="black"
                               className="mr-2 h-5 w-5"
                             />
                             Update
@@ -75,7 +75,7 @@ export function SemOfficesTable({
                             gradientMonochrome="failure"
                           >
                             {" "}
-                            <HiTrash color="white" className="mr-2 h-5 w-5" />
+                            <HiTrash color="black" className="mr-2 h-5 w-5" />
                             Delete
                           </Button>
                         </Tooltip>

@@ -105,12 +105,6 @@ const Login = () => {
                 Login
               </Button>
               <HR.Text />
-              <Link to={"/signup"}>
-                <Button gradientMonochrome="success" className="w-full">
-                  <HiUserAdd className="mr-2 h-5 w-5" />
-                  Create Account
-                </Button>
-              </Link>
             </div>
           </form>
         </div>

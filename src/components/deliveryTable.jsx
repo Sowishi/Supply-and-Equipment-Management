@@ -1,13 +1,10 @@
-import { Button, Dropdown, Table, Tooltip } from "flowbite-react";
-import { HiOutlineCog, HiOutlinePlusCircle, HiTrash } from "react-icons/hi";
-import { useSemStore } from "../zustand/store";
-import { toast } from "react-toastify";
-import moment from "moment";
+import { Button, Dropdown, Table } from "flowbite-react";
 import { useState } from "react";
+import moment from "moment";
 import SemModal from "./semModal";
-import useCrudRequest from "../hooks/useCrudRequest";
 import DeliveryModal from "./deliveryModal";
 import ConfirmationModal from "./confirmationModal";
+import useCrudRequest from "../hooks/useCrudRequest";
 
 export function DeliveryTable({ data }) {
   const [viewItemModal, setViewItemModal] = useState(false);
@@ -24,50 +21,45 @@ export function DeliveryTable({ data }) {
   };
 
   return (
-    <div className="overflow-x-auto ">
+    <div className="overflow-x-auto">
       <SemModal
         title={"Items Requested"}
         size={"5xl"}
         open={viewItemModal}
         handleClose={() => setViewItemModal(false)}
       >
-        <div class="relative overflow-x-auto">
-          <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <div className="relative overflow-x-auto">
+          <table className="w-full text-sm text-left text-gray-700">
+            <thead className="text-xs uppercase bg-gray-200 text-gray-600">
               <tr>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" className="px-6 py-3">
                   Stock / Property No.
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" className="px-6 py-3">
                   Description
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" className="px-6 py-3">
                   Unit
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" className="px-6 py-3">
                   Quantity
                 </th>
               </tr>
             </thead>
             <tbody>
-              {currentItem.items?.map((item) => {
-                return (
-                  <tr
-                    key={item.id}
-                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+              {currentItem.items?.map((item) => (
+                <tr key={item.id} className="bg-white border-b">
+                  <th
+                    scope="row"
+                    className="px-6 py-4 font-medium text-gray-900"
                   >
-                    <th
-                      scope="row"
-                      class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                    >
-                      {item?.id}
-                    </th>
-                    <td class="px-6 py-4">{item?.description}</td>
-                    <td class="px-6 py-4">{item?.unit}</td>
-                    <td class="px-6 py-4">{item?.quantity}</td>
-                  </tr>
-                );
-              })}
+                    {item?.id}
+                  </th>
+                  <td className="px-6 py-4">{item?.description}</td>
+                  <td className="px-6 py-4">{item?.unit}</td>
+                  <td className="px-6 py-4">{item?.quantity}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
@@ -95,47 +87,41 @@ export function DeliveryTable({ data }) {
       {data && (
         <Table striped hoverable>
           <Table.Head>
-            <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
+            <Table.HeadCell className="bg-gray-200 text-gray-600">
               Po Number
             </Table.HeadCell>
-            <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
+            <Table.HeadCell className="bg-gray-200 text-gray-600">
               Supplier
             </Table.HeadCell>
-            <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
+            <Table.HeadCell className="bg-gray-200 text-gray-600">
               Items
             </Table.HeadCell>
-            <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
+            <Table.HeadCell className="bg-gray-200 text-gray-600">
               Fund Cluster
             </Table.HeadCell>
-            <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
+            <Table.HeadCell className="bg-gray-200 text-gray-600">
               Category
             </Table.HeadCell>
-            <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
+            <Table.HeadCell className="bg-gray-200 text-gray-600">
               Status
             </Table.HeadCell>
-            <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
+            <Table.HeadCell className="bg-gray-200 text-gray-600">
               Date Requested
             </Table.HeadCell>
-
-            <Table.HeadCell className="bg-transparent text-gray-200 bg-slate-500">
+            <Table.HeadCell className="bg-gray-200 text-gray-600">
               Action
             </Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            {data.map((item, index) => {
+            {data.map((item) => {
               const date = moment(item?.createdAt?.toDate()).format("LLL");
-
               return (
                 <Table.Row key={item.id}>
-                  <Table.Cell className="bg-slate-800  text-white">
-                    {item.poNumber}
-                  </Table.Cell>
-                  <Table.Cell className="bg-slate-800  text-white">
-                    {item.supplier}
-                  </Table.Cell>
-                  <Table.Cell className="bg-slate-800  text-white">
+                  <Table.Cell>{item.poNumber}</Table.Cell>
+                  <Table.Cell>{item.supplier}</Table.Cell>
+                  <Table.Cell>
                     <Button
-                      color={"warning"}
+                      color="gray"
                       onClick={() => {
                         setCurrentItem(item);
                         setViewItemModal(true);
@@ -144,30 +130,19 @@ export function DeliveryTable({ data }) {
                       View Item
                     </Button>
                   </Table.Cell>
-                  <Table.Cell className="bg-slate-800  text-white">
-                    {item.fundCluster}
-                  </Table.Cell>
-                  <Table.Cell className="bg-slate-800  text-white">
-                    {item.category}
-                  </Table.Cell>
-                  <Table.Cell className="bg-slate-800  text-white font-bold">
-                    {item.status}
-                  </Table.Cell>
-                  {date && (
-                    <Table.Cell className="bg-slate-800  text-white font-bold">
-                      {date}
-                    </Table.Cell>
-                  )}
-
-                  <Table.Cell className="bg-slate-800  text-white">
-                    <Dropdown placement="left" label="Action" title="Action">
+                  <Table.Cell>{item.fundCluster}</Table.Cell>
+                  <Table.Cell>{item.category}</Table.Cell>
+                  <Table.Cell className="font-bold">{item.status}</Table.Cell>
+                  <Table.Cell className="font-bold">{date}</Table.Cell>
+                  <Table.Cell>
+                    <Dropdown placement="left" label="Action">
                       <Dropdown.Item
                         onClick={() => {
                           setCurrentItem(item);
                           setPoModal(true);
                         }}
                       >
-                        View Delivery Reciepts
+                        View Delivery Receipts
                       </Dropdown.Item>
                       <Dropdown.Item
                         onClick={() => {
