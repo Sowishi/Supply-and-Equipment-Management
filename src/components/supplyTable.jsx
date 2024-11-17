@@ -54,6 +54,10 @@ export function SupplyTable({ data, isClient, isCart, error, setError }) {
             <Table.HeadCell className="bg-gray-100 text-gray-700">
               Description
             </Table.HeadCell>
+
+            <Table.HeadCell className="bg-gray-100 text-gray-700">
+              Price
+            </Table.HeadCell>
             <Table.HeadCell className="bg-gray-100 text-gray-700">
               Unit
             </Table.HeadCell>
@@ -86,6 +90,9 @@ export function SupplyTable({ data, isClient, isCart, error, setError }) {
                   </Table.Cell>
                   <Table.Cell className="bg-white text-gray-900 font-bold">
                     {item.description}
+                  </Table.Cell>
+                  <Table.Cell className="bg-white text-gray-900 font-bold">
+                    ₱{item.price}
                   </Table.Cell>
                   <Table.Cell className="bg-white text-gray-900 font-bold">
                     {item.unit}

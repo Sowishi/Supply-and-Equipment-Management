@@ -57,6 +57,8 @@ const SemTransactionTable = ({
     }
   };
 
+  console.log(data);
+
   return (
     <div className="overflow-x-auto">
       <SemModal

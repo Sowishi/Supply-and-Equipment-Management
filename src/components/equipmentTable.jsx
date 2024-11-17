@@ -67,6 +67,9 @@ export function EquipmentTable({ data, isClient, isCart, setErrorEquipment }) {
               Description
             </Table.HeadCell>
             <Table.HeadCell className="bg-gray-100 text-gray-800">
+              Price
+            </Table.HeadCell>
+            <Table.HeadCell className="bg-gray-100 text-gray-800">
               Unit
             </Table.HeadCell>
             <Table.HeadCell className="bg-gray-100 text-gray-800">
@@ -99,6 +102,9 @@ export function EquipmentTable({ data, isClient, isCart, setErrorEquipment }) {
                   </Table.Cell>
                   <Table.Cell className="bg-white text-gray-800 font-bold">
                     {item.description}
+                  </Table.Cell>
+                  <Table.Cell className="bg-white text-gray-800 font-bold">
+                    ₱{item.price}
                   </Table.Cell>
                   <Table.Cell className="bg-white text-gray-800 font-bold">
                     {item.unit}
