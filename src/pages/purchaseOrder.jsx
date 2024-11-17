@@ -133,6 +133,9 @@ const PurchaseOrder = ({ cart }) => {
                     Unit
                   </th>
                   <th scope="col" class="px-6 py-3">
+                    Price
+                  </th>
+                  <th scope="col" class="px-6 py-3">
                     Quantity
                   </th>
                   <th></th>
@@ -152,7 +155,10 @@ const PurchaseOrder = ({ cart }) => {
                         {item?.id}
                       </th>
                       <td class="px-6 py-4">{item?.description}</td>
-                      <td class="px-6 py-4">{item?.unit}</td>
+                      <td class="px-6 py-4">{item?.price}</td>
+
+                      <td class="px-6 py-4">₱{item?.unit}</td>
+
                       <td class="px-6 py-4">{item?.quantity}</td>
                       <td>
                         <Button

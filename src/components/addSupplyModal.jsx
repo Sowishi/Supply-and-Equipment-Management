@@ -16,6 +16,7 @@ const AddSupplyModal = ({
     description: "",
     unit: "",
     quantity: 1,
+    price: 0,
   });
 
   const handleChange = (event) => {
@@ -25,6 +26,12 @@ const AddSupplyModal = ({
   };
 
   const handleSubmit = () => {
+    // Validate if price and quantity are numbers
+    if (isNaN(forms.price) || isNaN(forms.quantity)) {
+      alert("Please enter a valid number for Price and Quantity.");
+      return;
+    }
+
     // Generate a random 4-digit number for ID
     const randomId = Math.floor(1000 + Math.random() * 9000); // Ensures a 4-digit number
     const cartSupplyCopy = [...cartSupply];
@@ -46,6 +53,8 @@ const AddSupplyModal = ({
         label={"Description"}
       />
       <SemInput event={handleChange} name={"unit"} label={"Unit"} />
+      <SemInput event={handleChange} name={"price"} label={"Price"} />
+
       <SemInput event={handleChange} name={"quantity"} label={"Quantity"} />
       <Button
         onClick={handleSubmit}
