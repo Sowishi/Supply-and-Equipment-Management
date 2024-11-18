@@ -123,7 +123,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="w-100 min-h-screen bg-slate-950 flex justify-center items-center">
+    <div className="w-100 flex justify-center items-center">
       <div className="content bg-slate-800 min-h-5/6 w-5/6 rounded-lg p-10 my-5">
         <SemTitle color={"white"} title={"Account Creation"} />
         <form
