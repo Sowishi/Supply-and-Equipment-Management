@@ -175,7 +175,6 @@ const Signup = () => {
               id={"contact"}
               label={"Contact Number"}
               icon={HiPhone}
-              addOn="+63"
               placeholder={"Enter your contact number"}
               event={handleUpdateForm}
               name={"contact"}

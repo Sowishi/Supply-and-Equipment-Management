@@ -3,6 +3,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { Badge, Tooltip, Modal } from "flowbite-react";
 import { useState } from "react";
 import { useSemStore } from "../zustand/store";
+import useUpdateUser from "../hooks/useUpdateUser";
 
 const DashboardHeader = ({ handleOpenSidebar, setCartModal }) => {
   const { currentUser, cartSupply, cartEquipment } = useSemStore();
@@ -13,6 +14,7 @@ const DashboardHeader = ({ handleOpenSidebar, setCartModal }) => {
     confirmPassword: "",
   });
   const [passwordError, setPasswordError] = useState("");
+  const { updateUser } = useUpdateUser();
 
   const isAdmin = currentUser.role === "Admin";
   const totalCartLength = cartSupply.length + cartEquipment.length;
@@ -46,11 +48,23 @@ const DashboardHeader = ({ handleOpenSidebar, setCartModal }) => {
   const handleSubmit = () => {
     if (!validatePasswords()) return;
 
-    const updatedData = { ...formData };
-    delete updatedData.confirmPassword; // Remove confirmPassword before submitting
+    // Compare formData with currentUser to find changes
+    const updatedData = Object.keys(formData).reduce((changes, key) => {
+      if (formData[key] !== currentUser[key] && key !== "confirmPassword") {
+        changes[key] = formData[key];
+      }
+      return changes;
+    }, {});
+
+    if (Object.keys(updatedData).length === 0) {
+      console.log("No changes detected.");
+      setIsModalOpen(false);
+      return;
+    }
+
+    updateUser(currentUser.id, updatedData);
 
     // Handle the update logic here, such as sending updatedData to the backend
-    console.log("Updated data:", updatedData);
     setIsModalOpen(false);
   };
 

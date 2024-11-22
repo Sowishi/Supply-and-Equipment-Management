@@ -15,6 +15,7 @@ import RisFormModal from "../components/risFormModal";
 import cn from "../assets/cnsc front.jpeg";
 import { SupplyTable } from "../components/supplyTable";
 import { EquipmentTable } from "../components/equipmentTable";
+import useUpdateUser from "../hooks/useUpdateUser";
 
 const DashboardLayout = ({ children }) => {
   const [isOpen, setOpen] = useState(false);
@@ -23,7 +24,6 @@ const DashboardLayout = ({ children }) => {
   const [currentMode, setCurrentMode] = useState("Supply");
   const [error, setError] = useState(false);
   const [errorEquipment, setErrorEquipment] = useState(false);
-
   const {
     cartSupply,
     cartEquipment,
