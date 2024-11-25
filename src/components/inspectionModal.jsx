@@ -16,6 +16,9 @@ const InspectionModal = ({ title, size, open, handleClose, data }) => {
   return (
     <SemModal title={title} size={size} open={open} handleClose={handleClose}>
       <div ref={targetRef} className="container mx-auto p-2">
+        <h1 className="w-full flex justify-end items-center mb-10">
+          Appendix: 62{" "}
+        </h1>{" "}
         <div className="wrapper flex justify-center items-center flex-col mb-10">
           <h1 className="font-bold text-center text-3xl uppercase">
             Inspection & Acceptance Report
@@ -45,7 +48,6 @@ const InspectionModal = ({ title, size, open, handleClose, data }) => {
             </div>
           </div>
         </div>
-
         <div className="border border-slate-950 flex border-t-0">
           <div className="basis-2/12 border border-slate-950 p-2 text-center">
             <h1>Stock/Property No. </h1>
@@ -62,7 +64,6 @@ const InspectionModal = ({ title, size, open, handleClose, data }) => {
             <h1>Quantity</h1>
           </div>
         </div>
-
         {data.items?.map((item) => {
           return (
             <div className="border border-slate-950 flex border-t-0">
@@ -86,9 +87,7 @@ const InspectionModal = ({ title, size, open, handleClose, data }) => {
             </div>
           );
         })}
-
         <PurchaseOrderRowDummy />
-
         <div className="border flex border-slate-950 text-center">
           <div className="basis-full border p-10 border-slate-950 ">
             <h1 className="font-bold mb-5 uppercase">Inspection</h1>

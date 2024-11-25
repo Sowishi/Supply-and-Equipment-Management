@@ -123,7 +123,7 @@ export function InspectionTable({ data }) {
                   <Table.Cell>{item.supplier}</Table.Cell>
                   <Table.Cell>
                     <Button
-                      color={"gray"}
+                      color={"info"}
                       onClick={() => {
                         setCurrentItem(item);
                         setViewItemModal(true);

@@ -16,6 +16,9 @@ const PurchaseOrderModal = ({ title, size, open, handleClose, data }) => {
   return (
     <SemModal title={title} size={size} open={open} handleClose={handleClose}>
       <div ref={targetRef} className="container mx-auto p-2">
+        <h1 className="w-full flex justify-end items-center mb-10">
+          Appendix: 61{" "}
+        </h1>{" "}
         <div className="wrapper flex justify-center items-center flex-col">
           <h1 className="font-bold text-center text-2xl uppercase">
             Purchase Order
@@ -63,7 +66,6 @@ const PurchaseOrderModal = ({ title, size, open, handleClose, data }) => {
             </div>
           </div>
         </div>
-
         <div className="border border-slate-950 flex border-t-0">
           <div className="basis-2/12 border border-slate-950 p-2 text-center">
             <h1>Stock/Property No. </h1>
@@ -80,7 +82,6 @@ const PurchaseOrderModal = ({ title, size, open, handleClose, data }) => {
             <h1>Quantity</h1>
           </div>
         </div>
-
         {data.items?.map((item) => {
           return (
             <div className="border border-slate-950 flex border-t-0">
@@ -104,7 +105,6 @@ const PurchaseOrderModal = ({ title, size, open, handleClose, data }) => {
             </div>
           );
         })}
-
         <PurchaseOrderRowDummy />
         {/* <div className="border border-slate-950 p-10 text-center">
           <h1>
