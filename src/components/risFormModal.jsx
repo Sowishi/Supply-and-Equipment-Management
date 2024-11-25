@@ -27,12 +27,17 @@ const RisFormModal = ({
     <SemModal title={title} size={size} open={open} handleClose={handleClose}>
       <div ref={targetRef} className="container mx-auto p-2">
         <div className="wrapper">
+          <h1 className="w-full flex justify-end items-center mb-10">
+            Appendix: 63{" "}
+          </h1>{" "}
           <h1 className="font-bold text-center text-2xl">
             REQUISITION AND ISSUE SLIP{" "}
           </h1>
           <div className="flex justify-between items-center mt-2">
             <h1>Entity Name :CNSC </h1>
-            <h1>Fund Cluster: {data?.[0]?.fundCluster || "--"}</h1>
+            <div className="flex flex-col">
+              <h1>Fund Cluster: {data?.[0]?.fundCluster || "--"}</h1>
+            </div>
           </div>
         </div>
         <div className="border border-slate-950 flex">

@@ -44,6 +44,9 @@ const ParFormModal = ({
   return (
     <SemModal title={title} size={size} open={open} handleClose={handleClose}>
       <div ref={targetRef} className="container mx-auto p-2">
+        <h1 className="w-full flex justify-end items-center mb-10">
+          Appendix: 71{" "}
+        </h1>{" "}
         <div className="wrapper mb-10">
           <h1 className="font-bold text-center text-2xl mb-10">
             PROPERTY ACKNOWLEDGMENT RECEIPT{" "}
@@ -54,15 +57,16 @@ const ParFormModal = ({
               <h1>Entity Name : CAMARINES NORTE STATE COLLEGE </h1>
               <h1>Fund Cluster: {data?.item[0]?.fundCluster || "--"}</h1>
             </div>
-            <h1>
-              PAR No.:{" "}
-              {`${new Date().toISOString().slice(0, 10)}-${Math.floor(
-                Math.random() * (100 - 1 + 1) + 1
-              )}`}
-            </h1>{" "}
+            <div className="flex flex-col">
+              <h1>
+                PAR No.:{" "}
+                {`${new Date().toISOString().slice(0, 10)}-${Math.floor(
+                  Math.random() * (100 - 1 + 1) + 1
+                )}`}
+              </h1>{" "}
+            </div>
           </div>
         </div>
-
         <div className="border border-slate-950 flex border-t-0">
           <div className="basis-1/12 border border-slate-950 p-2 text-center">
             <h1>Quantity </h1>
@@ -84,7 +88,6 @@ const ParFormModal = ({
             <h1>Amount</h1>
           </div>
         </div>
-
         {data?.item.map((item) => {
           console.log(item);
           return (
@@ -111,9 +114,7 @@ const ParFormModal = ({
             </div>
           );
         })}
-
         <ParFormDummyRow />
-
         <div className="border border-slate-950 p-10 text-center">
           <div className="flex">
             <div className="basis-6/12">

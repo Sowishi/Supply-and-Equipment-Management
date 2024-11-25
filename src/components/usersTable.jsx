@@ -80,7 +80,7 @@ export function UsersTable({ data }) {
                     {item.contact}
                   </Table.Cell>
                   <Table.Cell className="bg-white text-gray-900">
-                    {item.office ? item.office : "---"}
+                    {item.office ? item.office : "Supply Office"}
                   </Table.Cell>
                   <Table.Cell className="bg-white text-gray-900">
                     {item.role}
