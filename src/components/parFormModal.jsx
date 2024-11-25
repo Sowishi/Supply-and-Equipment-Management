@@ -9,6 +9,7 @@ import moment from "moment";
 import ParFormDummyRow from "./parFormDummyRow";
 import { HiDownload } from "react-icons/hi";
 import { usePDF } from "react-to-pdf";
+import { useEffect, useState } from "react";
 
 const ParFormModal = ({
   title,
@@ -28,6 +29,18 @@ const ParFormModal = ({
 
   const { toPDF, targetRef } = usePDF({ filename: "par.pdf" });
 
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    const parseUser = async () => {
+      const user = await JSON.parse(data.currentUser);
+
+      setUser(user);
+    };
+
+    parseUser();
+  }, []);
+
   return (
     <SemModal title={title} size={size} open={open} handleClose={handleClose}>
       <div ref={targetRef} className="container mx-auto p-2">
@@ -35,9 +48,18 @@ const ParFormModal = ({
           <h1 className="font-bold text-center text-2xl mb-10">
             PROPERTY ACKNOWLEDGMENT RECEIPT{" "}
           </h1>
+
           <div className="flex justify-between items-center mt-2">
-            <h1>Entity Name : CAMARINES NORTE STATE COLLEGE </h1>
-            <h1>PAR No.: _____</h1>
+            <div className="fle flex-col">
+              <h1>Entity Name : CAMARINES NORTE STATE COLLEGE </h1>
+              <h1>Fund Cluster: {data?.item[0]?.fundCluster || "--"}</h1>
+            </div>
+            <h1>
+              PAR No.:{" "}
+              {`${new Date().toISOString().slice(0, 10)}-${Math.floor(
+                Math.random() * (100 - 1 + 1) + 1
+              )}`}
+            </h1>{" "}
           </div>
         </div>
 
@@ -78,13 +100,13 @@ const ParFormModal = ({
                 <h1>{item.description}</h1>
               </div>
               <div className="basis-2/12 border border-slate-950 p-2 text-center">
-                <h1>{item.propertyNumber}</h1>
+                <h1>{item.id}</h1>
               </div>
               <div className="basis-2/12 border border-slate-950 p-2 text-center">
                 <h1>{date}</h1>
               </div>
               <div className="basis-2/12 border border-slate-950 p-2 text-center">
-                <h1>{item.unitCost}</h1>
+                <h1>₱{item.price}</h1>
               </div>
             </div>
           );
@@ -103,13 +125,8 @@ const ParFormModal = ({
             </div>
             <div className="basis-6/12">
               <div className="wrapper">
-                <h1>
-                  Received By:{" "}
-                  {currentUser.firstName + " " + currentUser.lastName}
-                </h1>
-                <h1 className="font-bold">
-                  {currentUser.office} | Deparment Supply Coordinator
-                </h1>
+                <h1>Received By: {user.firstName + " " + user.lastName}</h1>
+                <h1 className="font-bold">{user.office}</h1>
                 <h1>{date}</h1>
               </div>
             </div>

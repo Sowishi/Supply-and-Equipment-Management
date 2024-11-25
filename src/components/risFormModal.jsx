@@ -32,7 +32,7 @@ const RisFormModal = ({
           </h1>
           <div className="flex justify-between items-center mt-2">
             <h1>Entity Name :CNSC </h1>
-            <h1>Fund Cluster : 07 - Trust Receipts fund</h1>
+            <h1>Fund Cluster: {data?.[0]?.fundCluster || "--"}</h1>
           </div>
         </div>
         <div className="border border-slate-950 flex">
@@ -44,8 +44,13 @@ const RisFormModal = ({
           </div>
           <div className="basis-4/12 border border-slate-950">
             <div className="flex flex-col ml-3">
-              <h1>Responsibility Center Code: ___________</h1>
-              <h1>RIS No.: _____</h1>
+              <h1>Responsibility Center Code: CNSC-COENG</h1>
+              <h1>
+                RIS No.:{" "}
+                {`${new Date().toISOString().slice(0, 10)}-${Math.floor(
+                  Math.random() * (100 - 1 + 1) + 1
+                )}`}
+              </h1>
             </div>
           </div>
         </div>

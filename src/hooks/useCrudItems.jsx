@@ -29,6 +29,7 @@ const useCrudItems = () => {
       ...item,
       category: data.category,
       supplier: data.supplier,
+      fundCluster: data.fundCluster,
       createdAt: serverTimestamp(),
     });
   };

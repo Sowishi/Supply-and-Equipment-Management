@@ -87,129 +87,264 @@ const SemTransactionTable = ({
               </Table.HeadCell>
             )}
           </Table.Head>
-          <Table.Body className="divide-y">
-            {userTransactions.map((item) => {
-              const user = JSON.parse(item.currentUser);
-              const date = moment(item.createdAt?.toDate()).format("LLL");
-              const badgeColor = getBadgeColor(item.status);
 
-              const finalItem =
-                item.item.category === "supply"
-                  ? handleGetSupply(item.item.id)
-                  : handleGetEquipment(item.item.id);
+          {currentUser.role == "Admin" ? (
+            <Table.Body className="divide-y">
+              {data.map((item) => {
+                const user = JSON.parse(item.currentUser);
+                const date = moment(item.createdAt?.toDate()).format("LLL");
+                const badgeColor = getBadgeColor(item.status);
 
-              return (
-                <Table.Row key={item.id}>
-                  <Table.Cell className="bg-white text-gray-900">
-                    {user.firstName + " " + user.lastName}
-                  </Table.Cell>
-                  <Table.Cell className="bg-white text-gray-900">
-                    {user.office}
-                  </Table.Cell>
-                  <Table.Cell className="bg-white text-gray-900">
-                    {item.category}
-                  </Table.Cell>
-                  <Table.Cell className="bg-white text-gray-900">
-                    {item.reviewBy ? item.reviewBy : "Waiting for approval"}
-                  </Table.Cell>
-                  <Table.Cell className="bg-white text-gray-900">
-                    {date}
-                  </Table.Cell>
-                  <Table.Cell className="bg-white text-gray-900">
-                    <Badge color={badgeColor} size="lg">
-                      {item.status}
-                    </Badge>
-                  </Table.Cell>
-                  <Table.Cell className="bg-white text-gray-900">
-                    <Dropdown
-                      placement="left"
-                      label="Forms"
-                      dismissOnClick={false}
-                    >
-                      <Tooltip
-                        content="You can now view your RIS form"
-                        placement="left"
-                      >
-                        <Dropdown.Item
-                          onClick={() => {
-                            setCurrentTransaction(item);
-                            setRisForm(true);
-                          }}
-                        >
-                          View RIS Form
-                        </Dropdown.Item>
-                      </Tooltip>
-                      <Tooltip
-                        placement="left"
-                        content={
-                          item.status !== "Approve"
-                            ? "Your document is not approved yet"
-                            : `You can now view your ${
-                                item.category === "Supply" ? "ICS" : "PAR"
-                              } form`
-                        }
-                      >
-                        <Dropdown.Item
-                          disabled={item.status !== "Approve"}
-                          onClick={() => {
-                            setCurrentTransaction(item);
-                            item.category === "Supply"
-                              ? setIcsForm(true)
-                              : setParForm(true);
-                          }}
-                        >
-                          {item.category === "Supply"
-                            ? "View ICS Form"
-                            : "View PAR Form"}
-                        </Dropdown.Item>
-                      </Tooltip>
-                      {item.category === "Equipment" && (
-                        <Dropdown.Item
-                          onClick={() => {
-                            setSelected(item.id);
-                            setQrModal(true);
-                          }}
-                        >
-                          View QR Code
-                        </Dropdown.Item>
-                      )}
-                    </Dropdown>
-                  </Table.Cell>
-                  {isAdmin && (
+                const finalItem =
+                  item.item.category === "supply"
+                    ? handleGetSupply(item.item.id)
+                    : handleGetEquipment(item.item.id);
+
+                return (
+                  <Table.Row key={item.id}>
                     <Table.Cell className="bg-white text-gray-900">
-                      <div className="flex">
-                        <Button
-                          disabled={
-                            item.status === "Approve" ||
-                            item.status === "Rejected"
-                          }
-                          onClick={() => {
-                            handleDecrementQuantity(item);
-                            approveTransaction(item.id, currentUser, item.item);
-                          }}
-                          gradientMonochrome="success"
-                        >
-                          Approve
-                        </Button>
-                        <Button
-                          disabled={
-                            item.status === "Approve" ||
-                            item.status === "Rejected"
-                          }
-                          onClick={() =>
-                            rejectTransaction(item.id, currentUser)
-                          }
-                          gradientMonochrome="failure"
-                        >
-                          Reject
-                        </Button>
-                      </div>
+                      {user.firstName + " " + user.lastName}
                     </Table.Cell>
-                  )}
-                </Table.Row>
-              );
-            })}
-          </Table.Body>
+                    <Table.Cell className="bg-white text-gray-900">
+                      {user.office}
+                    </Table.Cell>
+                    <Table.Cell className="bg-white text-gray-900">
+                      {item.category}
+                    </Table.Cell>
+                    <Table.Cell className="bg-white text-gray-900">
+                      {item.reviewBy ? item.reviewBy : "Waiting for approval"}
+                    </Table.Cell>
+                    <Table.Cell className="bg-white text-gray-900">
+                      {date}
+                    </Table.Cell>
+                    <Table.Cell className="bg-white text-gray-900">
+                      <Badge color={badgeColor} size="lg">
+                        {item.status}
+                      </Badge>
+                    </Table.Cell>
+                    <Table.Cell className="bg-white text-gray-900">
+                      <Dropdown
+                        placement="left"
+                        label="Forms"
+                        dismissOnClick={false}
+                      >
+                        <Tooltip
+                          content="You can now view your RIS form"
+                          placement="left"
+                        >
+                          <Dropdown.Item
+                            onClick={() => {
+                              setCurrentTransaction(item);
+                              setRisForm(true);
+                            }}
+                          >
+                            View RIS Form
+                          </Dropdown.Item>
+                        </Tooltip>
+                        <Tooltip
+                          placement="left"
+                          content={
+                            item.status !== "Approve"
+                              ? "Your document is not approved yet"
+                              : `You can now view your ${
+                                  item.category === "Supply" ? "ICS" : "PAR"
+                                } form`
+                          }
+                        >
+                          <Dropdown.Item
+                            disabled={item.status !== "Approve"}
+                            onClick={() => {
+                              setCurrentTransaction(item);
+                              item.category === "Supply"
+                                ? setIcsForm(true)
+                                : setParForm(true);
+                            }}
+                          >
+                            {item.category === "Supply"
+                              ? "View ICS Form"
+                              : "View PAR Form"}
+                          </Dropdown.Item>
+                        </Tooltip>
+                        {item.category === "Equipment" && (
+                          <Dropdown.Item
+                            onClick={() => {
+                              setSelected(item.id);
+                              setQrModal(true);
+                            }}
+                          >
+                            View QR Code
+                          </Dropdown.Item>
+                        )}
+                      </Dropdown>
+                    </Table.Cell>
+                    {isAdmin && (
+                      <Table.Cell className="bg-white text-gray-900">
+                        <div className="flex">
+                          <Button
+                            disabled={
+                              item.status === "Approve" ||
+                              item.status === "Rejected"
+                            }
+                            onClick={() => {
+                              handleDecrementQuantity(item);
+                              approveTransaction(
+                                item.id,
+                                currentUser,
+                                item.item
+                              );
+                            }}
+                            gradientMonochrome="success"
+                          >
+                            Approve
+                          </Button>
+                          <Button
+                            disabled={
+                              item.status === "Approve" ||
+                              item.status === "Rejected"
+                            }
+                            onClick={() =>
+                              rejectTransaction(item.id, currentUser)
+                            }
+                            gradientMonochrome="failure"
+                          >
+                            Reject
+                          </Button>
+                        </div>
+                      </Table.Cell>
+                    )}
+                  </Table.Row>
+                );
+              })}
+            </Table.Body>
+          ) : (
+            <Table.Body className="divide-y">
+              {userTransactions.map((item) => {
+                const user = JSON.parse(item.currentUser);
+                const date = moment(item.createdAt?.toDate()).format("LLL");
+                const badgeColor = getBadgeColor(item.status);
+
+                const finalItem =
+                  item.item.category === "supply"
+                    ? handleGetSupply(item.item.id)
+                    : handleGetEquipment(item.item.id);
+
+                return (
+                  <Table.Row key={item.id}>
+                    <Table.Cell className="bg-white text-gray-900">
+                      {user.firstName + " " + user.lastName}
+                    </Table.Cell>
+                    <Table.Cell className="bg-white text-gray-900">
+                      {user.office}
+                    </Table.Cell>
+                    <Table.Cell className="bg-white text-gray-900">
+                      {item.category}
+                    </Table.Cell>
+                    <Table.Cell className="bg-white text-gray-900">
+                      {item.reviewBy ? item.reviewBy : "Waiting for approval"}
+                    </Table.Cell>
+                    <Table.Cell className="bg-white text-gray-900">
+                      {date}
+                    </Table.Cell>
+                    <Table.Cell className="bg-white text-gray-900">
+                      <Badge color={badgeColor} size="lg">
+                        {item.status}
+                      </Badge>
+                    </Table.Cell>
+                    <Table.Cell className="bg-white text-gray-900">
+                      <Dropdown
+                        placement="left"
+                        label="Forms"
+                        dismissOnClick={false}
+                      >
+                        <Tooltip
+                          content="You can now view your RIS form"
+                          placement="left"
+                        >
+                          <Dropdown.Item
+                            onClick={() => {
+                              setCurrentTransaction(item);
+                              setRisForm(true);
+                            }}
+                          >
+                            View RIS Form
+                          </Dropdown.Item>
+                        </Tooltip>
+                        <Tooltip
+                          placement="left"
+                          content={
+                            item.status !== "Approve"
+                              ? "Your document is not approved yet"
+                              : `You can now view your ${
+                                  item.category === "Supply" ? "ICS" : "PAR"
+                                } form`
+                          }
+                        >
+                          <Dropdown.Item
+                            disabled={item.status !== "Approve"}
+                            onClick={() => {
+                              setCurrentTransaction(item);
+                              item.category === "Supply"
+                                ? setIcsForm(true)
+                                : setParForm(true);
+                            }}
+                          >
+                            {item.category === "Supply"
+                              ? "View ICS Form"
+                              : "View PAR Form"}
+                          </Dropdown.Item>
+                        </Tooltip>
+                        {item.category === "Equipment" && (
+                          <Dropdown.Item
+                            onClick={() => {
+                              setSelected(item.id);
+                              setQrModal(true);
+                            }}
+                          >
+                            View QR Code
+                          </Dropdown.Item>
+                        )}
+                      </Dropdown>
+                    </Table.Cell>
+                    {isAdmin && (
+                      <Table.Cell className="bg-white text-gray-900">
+                        <div className="flex">
+                          <Button
+                            disabled={
+                              item.status === "Approve" ||
+                              item.status === "Rejected"
+                            }
+                            onClick={() => {
+                              handleDecrementQuantity(item);
+                              approveTransaction(
+                                item.id,
+                                currentUser,
+                                item.item
+                              );
+                            }}
+                            gradientMonochrome="success"
+                          >
+                            Approve
+                          </Button>
+                          <Button
+                            disabled={
+                              item.status === "Approve" ||
+                              item.status === "Rejected"
+                            }
+                            onClick={() =>
+                              rejectTransaction(item.id, currentUser)
+                            }
+                            gradientMonochrome="failure"
+                          >
+                            Reject
+                          </Button>
+                        </div>
+                      </Table.Cell>
+                    )}
+                  </Table.Row>
+                );
+              })}
+            </Table.Body>
+          )}
         </Table>
       )}
     </div>
