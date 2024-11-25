@@ -125,8 +125,8 @@ const ParFormModal = ({
             </div>
             <div className="basis-6/12">
               <div className="wrapper">
-                <h1>Received By: {user.firstName + " " + user.lastName}</h1>
-                <h1 className="font-bold">{user.office}</h1>
+                <h1>Received By: {user?.firstName + " " + user?.lastName}</h1>
+                <h1 className="font-bold">{user?.office}</h1>
                 <h1>{date}</h1>
               </div>
             </div>

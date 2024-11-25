@@ -8,6 +8,7 @@ import IcsFormRowDummy from "./icsFormRowDummy";
 import moment from "moment";
 import { usePDF } from "react-to-pdf";
 import { HiDownload } from "react-icons/hi";
+import { useEffect, useState } from "react";
 
 const IcsFormModal = ({
   title,
@@ -25,6 +26,17 @@ const IcsFormModal = ({
   const firebaseDate = data?.reviewDate;
   const date = moment(firebaseDate?.toDate()).format("LLL");
   const { toPDF, targetRef } = usePDF({ filename: "ics.pdf" });
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    const parseUser = async () => {
+      const user = await JSON.parse(data.currentUser);
+
+      setUser(user);
+    };
+
+    parseUser();
+  }, []);
 
   return (
     <SemModal title={title} size={size} open={open} handleClose={handleClose}>
@@ -34,9 +46,16 @@ const IcsFormModal = ({
             INVENTORY CUSTODIAN SLIP{" "}
           </h1>
           <div className="flex justify-between items-center mt-2">
-            <h1>Entity Name: Camarines Norte State College</h1>
-            <h1>Fund Cluster : 01 - Regular Agency Fund</h1>
-            <h1>ICS No.: _____</h1>
+            <div className="fle flex-col">
+              <h1>Entity Name : CAMARINES NORTE STATE COLLEGE </h1>
+              <h1>Fund Cluster: {data?.item[0]?.fundCluster || "--"}</h1>
+            </div>
+            <h1>
+              ICS No.:{" "}
+              {`${new Date().toISOString().slice(0, 10)}-${Math.floor(
+                Math.random() * (100 - 1 + 1) + 1
+              )}`}
+            </h1>{" "}
           </div>
         </div>
 
@@ -69,25 +88,25 @@ const IcsFormModal = ({
           return (
             <div className="border border-slate-950 flex border-t-0">
               <div className="basis-1/12 border border-slate-950 p-2 text-center">
-                <h1>1</h1>
+                <h1>{item.borrowedQuantity}</h1>
               </div>
               <div className="basis-1/12 border border-slate-950 p-2 text-center">
                 <h1>{item.unit}</h1>
               </div>
               <div className="basis-1/12 border border-slate-950 p-2 text-center">
-                <h1>{item.unitCost}</h1>
+                <h1>{item.price}</h1>
               </div>
               <div className="basis-1/12 border border-slate-950 p-2 text-center">
-                <h1>{1 * parseInt(item.unitCost)}</h1>
+                <h1>{item.borrowedQuantity * parseInt(item.price)}</h1>
               </div>
               <div className="basis-4/12 border border-slate-950 p-2 text-center">
                 <h1>{item.description}</h1>
               </div>
               <div className="basis-2/12 border border-slate-950 p-2 text-center">
-                <h1>{item.inventoryNumber}</h1>
+                <h1>{item.id}</h1>
               </div>
               <div className="basis-2/12 border border-slate-950 p-2 text-center">
-                <h1>{item.estimatedUsefulLife}</h1>
+                <h1>---</h1>
               </div>
             </div>
           );
@@ -106,13 +125,8 @@ const IcsFormModal = ({
             </div>
             <div className="basis-6/12">
               <div className="wrapper">
-                <h1>
-                  Received By:{" "}
-                  {currentUser.firstName + " " + currentUser.lastName}
-                </h1>
-                <h1 className="font-bold">
-                  {currentUser.office} | Deparment Supply Coordinator
-                </h1>
+                <h1>Received By: {user?.firstName + " " + user?.lastName}</h1>
+                <h1 className="font-bold">{user?.office}</h1>
                 <h1>{date}</h1>
               </div>
             </div>
