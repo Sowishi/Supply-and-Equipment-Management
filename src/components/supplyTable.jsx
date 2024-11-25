@@ -4,10 +4,10 @@ import { HiPlusCircle } from "react-icons/hi";
 import { useState } from "react";
 import { useSemStore } from "../zustand/store";
 import SemInput from "./semInput";
+import { toast } from "react-toastify";
 
 export function SupplyTable({ data, isClient, isCart, error, setError }) {
   const filterData = data.filter((item) => item.category === "Supply");
-
   const { setCartSupply, cartSupply } = useSemStore();
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -15,124 +15,103 @@ export function SupplyTable({ data, isClient, isCart, error, setError }) {
   const [quantity, setQuantity] = useState(1);
   const [errorMessage, setErrorMessage] = useState(false);
 
+  // Sanitize input to prevent special characters and negative signs
+  const sanitizeInput = (value) => {
+    const sanitized = value.replace(/[^0-9]/g, ""); // Allow only numbers
+    return sanitized === "" ? "" : Math.max(1, parseInt(sanitized, 10));
+  };
+
   const handleOpenModal = (item) => {
     setSelectedItem(item);
-    setQuantity(1); // Reset quantity when modal opens
+    setQuantity(1);
     setModalVisible(true);
   };
 
   const handleAddToCart = () => {
     if (quantity > selectedItem.quantity) {
       setErrorMessage(true);
+      toast.error("Request quantity exceeds the available stocks");
       return;
     }
-    const cartSupplyCopy = [...cartSupply];
+    const updatedCart = [...cartSupply];
     const itemToAdd = { ...selectedItem, borrowedQuantity: quantity };
-    cartSupplyCopy.push(itemToAdd);
-    setCartSupply(cartSupplyCopy);
+    updatedCart.push(itemToAdd);
+    setCartSupply(updatedCart);
     setErrorMessage(false);
     setModalVisible(false);
   };
 
-  const handlelDeleteCart = (data) => {
-    const cartSupplyCopy = [...cartSupply];
-    const output = cartSupplyCopy.filter((item) => item.docID !== data.docID);
-    setCartSupply(output);
-  };
-
-  const handleIncrement = (data) => {
-    const cartSupplyCopy = [...cartSupply];
-    cartSupplyCopy.forEach((item) => {
-      if (item.docID === data.docID) {
-        item.borrowedQuantity = (item.borrowedQuantity || 0) + 1;
-        setError(item.borrowedQuantity > data.quantity);
-      }
-    });
-    setCartSupply(cartSupplyCopy);
-  };
-
-  const handleDecrement = (data) => {
-    const cartSupplyCopy = [...cartSupply];
-    cartSupplyCopy.forEach((item) => {
-      if (item.docID === data.docID) {
-        item.borrowedQuantity = (item.borrowedQuantity || 1) - 1;
-        setError(item.borrowedQuantity > data.quantity);
-      }
-    });
-    setCartSupply(cartSupplyCopy);
-  };
-
   const handleQuantityChange = (e) => {
-    const value =
-      e.target.value === "" ? "" : Math.max(1, Number(e.target.value));
+    const value = sanitizeInput(e.target.value);
     setQuantity(value);
     setError(value > selectedItem.quantity);
   };
+
+  const updateCartQuantity = (data, value) => {
+    const sanitizedValue = sanitizeInput(value);
+    const updatedCart = cartSupply.map((item) =>
+      item.docID === data.docID
+        ? { ...item, borrowedQuantity: sanitizedValue }
+        : item
+    );
+    setCartSupply(updatedCart);
+    setError(sanitizedValue > data.quantity);
+  };
+
+  const handleIncrement = (data) => {
+    updateCartQuantity(data, (data.borrowedQuantity || 0) + 1);
+  };
+
+  const handleDecrement = (data) => {
+    updateCartQuantity(data, Math.max(1, (data.borrowedQuantity || 1) - 1));
+  };
+
+  const handleDeleteCartItem = (data) => {
+    const updatedCart = cartSupply.filter((item) => item.docID !== data.docID);
+    setCartSupply(updatedCart);
+  };
+
   return (
     <div className="overflow-x-auto">
       {data && (
         <>
           <Table striped hoverable>
             <Table.Head>
-              <Table.HeadCell className="bg-gray-100 text-gray-700">
-                Stock / Property No.
-              </Table.HeadCell>
-              <Table.HeadCell className="bg-gray-100 text-gray-700">
-                Description
-              </Table.HeadCell>
-              <Table.HeadCell className="bg-gray-100 text-gray-700">
-                Price
-              </Table.HeadCell>
-              <Table.HeadCell className="bg-gray-100 text-gray-700">
-                Unit
-              </Table.HeadCell>
-              <Table.HeadCell className="bg-gray-100 text-gray-700">
-                Quantity
-              </Table.HeadCell>
-              <Table.HeadCell className="bg-gray-100 text-gray-700">
-                Supplier
-              </Table.HeadCell>
-              <Table.HeadCell className="bg-gray-100 text-gray-700">
-                Date
-              </Table.HeadCell>
-              {isClient && (
-                <Table.HeadCell className="bg-gray-100 text-gray-700"></Table.HeadCell>
-              )}
+              <Table.HeadCell>Stock / Property No.</Table.HeadCell>
+              <Table.HeadCell>Description</Table.HeadCell>
+              <Table.HeadCell>Price</Table.HeadCell>
+              <Table.HeadCell>Unit</Table.HeadCell>
+              <Table.HeadCell>Quantity</Table.HeadCell>
+              <Table.HeadCell>Supplier</Table.HeadCell>
+              <Table.HeadCell>Date</Table.HeadCell>
+              {isClient && <Table.HeadCell />}
               {isCart && (
                 <>
-                  <Table.HeadCell className="bg-gray-100 text-gray-700"></Table.HeadCell>
-                  <Table.HeadCell className="bg-gray-100 text-gray-700"></Table.HeadCell>
+                  <Table.HeadCell />
+                  <Table.HeadCell />
                 </>
               )}
             </Table.Head>
-            <Table.Body className="divide-y">
+            <Table.Body>
               {filterData.map((item) => {
                 const date = moment(item?.createdAt?.toDate()).format("LLL");
                 return (
                   <Table.Row key={item.docID}>
-                    <Table.Cell className="bg-white text-gray-900">
-                      {item.id}
-                    </Table.Cell>
-                    <Table.Cell className="bg-white text-gray-900 font-bold">
+                    <Table.Cell>{item.id}</Table.Cell>
+                    <Table.Cell className="font-bold">
                       {item.description}
                     </Table.Cell>
-                    <Table.Cell className="bg-white text-gray-900 font-bold">
-                      ₱{item.price}
-                    </Table.Cell>
-                    <Table.Cell className="bg-white text-gray-900 font-bold">
-                      {item.unit}
-                    </Table.Cell>
-                    <Table.Cell className="bg-white text-gray-900 font-bold">
+                    <Table.Cell className="font-bold">₱{item.price}</Table.Cell>
+                    <Table.Cell className="font-bold">{item.unit}</Table.Cell>
+                    <Table.Cell className="font-bold">
                       {item.quantity}
                     </Table.Cell>
-                    <Table.Cell className="bg-white text-gray-900 font-bold">
+                    <Table.Cell className="font-bold">
                       {item.supplier}
                     </Table.Cell>
-                    <Table.Cell className="bg-white text-gray-900 font-bold">
-                      {date}
-                    </Table.Cell>
+                    <Table.Cell className="font-bold">{date}</Table.Cell>
                     {isClient && (
-                      <Table.Cell className="bg-white text-gray-900 font-bold">
+                      <Table.Cell>
                         <Button
                           onClick={() => handleOpenModal(item)}
                           gradientMonochrome="success"
@@ -143,10 +122,9 @@ export function SupplyTable({ data, isClient, isCart, error, setError }) {
                       </Table.Cell>
                     )}
                     {isCart && (
-                      <Table.Cell className="bg-white text-gray-900">
-                        <div className="flex justify-center items-center">
+                      <Table.Cell>
+                        <div className="flex items-center">
                           <Button
-                            className="mx-3"
                             disabled={item.borrowedQuantity <= 1}
                             onClick={() => handleDecrement(item)}
                           >
@@ -155,33 +133,20 @@ export function SupplyTable({ data, isClient, isCart, error, setError }) {
                           <SemInput
                             className="mx-3"
                             value={item.borrowedQuantity || 0}
-                            event={(event) => {
-                              const value = parseInt(event.target.value || 0);
-                              setError(value > item.quantity);
-
-                              const cartSupplyCopy = [...cartSupply];
-                              cartSupplyCopy.forEach((supply) => {
-                                if (supply.docID === item.docID) {
-                                  supply.borrowedQuantity = value;
-                                }
-                              });
-
-                              setCartSupply(cartSupplyCopy);
-                            }}
+                            event={(e) =>
+                              updateCartQuantity(item, e.target.value)
+                            }
                           />
-                          <Button
-                            className="mx-3"
-                            onClick={() => handleIncrement(item)}
-                          >
+                          <Button onClick={() => handleIncrement(item)}>
                             +
                           </Button>
                         </div>
                       </Table.Cell>
                     )}
                     {isCart && (
-                      <Table.Cell className="bg-white text-gray-900 font-bold">
+                      <Table.Cell>
                         <Button
-                          onClick={() => handlelDeleteCart(item)}
+                          onClick={() => handleDeleteCartItem(item)}
                           gradientMonochrome="failure"
                         >
                           DELETE
@@ -211,6 +176,12 @@ export function SupplyTable({ data, isClient, isCart, error, setError }) {
                 onChange={handleQuantityChange}
                 placeholder="Enter quantity"
                 min={1}
+                onKeyDown={(e) => {
+                  // Prevent negative signs, e, and other invalid inputs
+                  if (["e", "E", "-", "+", "."].includes(e.key)) {
+                    e.preventDefault();
+                  }
+                }}
               />
               {error && (
                 <p className="text-red-500 mt-2">
