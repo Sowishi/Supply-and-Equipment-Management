@@ -16,8 +16,9 @@ const ViewTransaction = () => {
   const getTransaction = async () => {
     const docRef = doc(db, "transaction", id);
     const snapshot = await getDoc(docRef);
+
     setTransaction(snapshot.data());
-    setUser(JSON.parse(snapshot.data().currentUser));
+    setUser(JSON.parse(snapshot.data()?.currentUser));
   };
 
   useEffect(() => {
@@ -33,69 +34,67 @@ const ViewTransaction = () => {
             style={{ background: "#835863" }}
           >
             <img width={80} src={logo} alt="" />
-            <h1 className="text-4xl ml-5 font-bold text-white">
-              CNSC Property
-            </h1>
+            <h1 className="text-4xl ml-5  text-white">CNSC Property</h1>
           </div>
           <div className="content mt-10 p-5">
             <div className="card flex my-2">
               <div className="basis-5/12">
-                <h1 className="text-lg text-red-500 font-bold">
-                  Classification
-                </h1>
+                <h1 className="text-md text-red-500 ">Classification</h1>
               </div>
               <div className="basis-7/12 border-b-2 border-red-500">
-                <h1 className="text-lg text-black">
-                  {transaction.item[0].name}
-                </h1>
+                <h1 className="text-md text-black">Equipment</h1>
+              </div>
+            </div>
+            {transaction.item.map((item) => {
+              return (
+                <div className="card flex my-2">
+                  <div className="basis-5/12">
+                    <h1 className="text-md text-red-500 ">
+                      Property Number: #{item.id}
+                    </h1>
+                  </div>
+                  <div className="basis-7/12 border-b-2 border-red-500">
+                    <h1 className="text-md text-black">{item.description}</h1>
+                  </div>
+                </div>
+              );
+            })}
+            <div className="card flex my-2">
+              <div className="basis-5/12">
+                <h1 className="text-md text-red-500 ">Location</h1>
+              </div>
+              <div className="basis-7/12 border-b-2 border-red-500">
+                <h1 className="text-md text-black ">{user.address + " -- "}</h1>
               </div>
             </div>
             <div className="card flex my-2">
               <div className="basis-5/12">
-                <h1 className="text-lg text-red-500 font-bold">
-                  Property Number
-                </h1>
+                <h1 className="text-md text-red-500 ">End User</h1>
               </div>
               <div className="basis-7/12 border-b-2 border-red-500">
-                <h1 className="text-lg text-black">
-                  {" "}
-                  {transaction.item[0].propertyNumber}
-                </h1>
-              </div>
-            </div>
-            <div className="card flex my-2">
-              <div className="basis-5/12">
-                <h1 className="text-lg text-red-500 font-bold">
-                  End User/Location
-                </h1>
-              </div>
-              <div className="basis-7/12 border-b-2 border-red-500">
-                <h1 className="text-lg text-black font-bold">
-                  {user.address + " -- "}
-                </h1>
-                <h1 className="text-lg text-black">
+                <h1 className="text-md text-black font-bold">
                   {user.firstName + " " + user.lastName}
                 </h1>
               </div>
             </div>
             <div className="card flex my-2">
               <div className="basis-5/12">
-                <h1 className="text-lg text-red-500 font-bold">
-                  Date Accquired
-                </h1>
+                <h1 className="text-md text-red-500 ">Date Accquired</h1>
               </div>
               <div className="basis-7/12 border-b-2 border-red-500">
-                <h1 className="text-lg text-black">
+                <h1 className="text-md text-black">
                   {moment(transaction.createdAt.toDate()).format("LLL")}
                 </h1>
               </div>
             </div>
             <div className="card flex my-2">
               <div className="basis-5/12">
-                <h1 className="text-lg text-red-500 font-bold">Supplier</h1>
+                <h1 className="text-md text-red-500 ">Supplier</h1>
               </div>
               <div className="basis-7/12 border-b-2 border-red-500">
-                <h1 className="text-lg text-black">Admin</h1>
+                <h1 className="text-md text-black">
+                  {transaction.item[0].supplier}
+                </h1>
               </div>
             </div>
           </div>

@@ -22,7 +22,7 @@ import { useSemStore } from "../zustand/store";
 
 const SemSidebar = ({ isOpen, handleClose }) => {
   const navigation = useNavigate();
-  const { setCurrentUser } = useSemStore();
+  const { setCurrentUser, currentUser } = useSemStore();
 
   return (
     <Drawer open={isOpen} onClose={handleClose}>
@@ -42,11 +42,13 @@ const SemSidebar = ({ isOpen, handleClose }) => {
                   Master Records
                 </Sidebar.Item>
               </Link>
-              <Link to={"/users-management"}>
-                <Sidebar.Item className="my-3" icon={HiUsers}>
-                  Users Management
-                </Sidebar.Item>
-              </Link>
+              {currentUser.role == "Admin" && (
+                <Link to={"/users-management"}>
+                  <Sidebar.Item className="my-3" icon={HiUsers}>
+                    Users Management
+                  </Sidebar.Item>
+                </Link>
+              )}
               <Sidebar.Item
                 onClick={() => {
                   localStorage.removeItem("user");
