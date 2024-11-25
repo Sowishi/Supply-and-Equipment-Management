@@ -57,8 +57,6 @@ const SemTransactionTable = ({
     }
   };
 
-  console.log(data);
-
   return (
     <div className="overflow-x-auto">
       <SemModal
@@ -120,6 +118,8 @@ const SemTransactionTable = ({
               } else {
                 finalItem = handleGetEquipment(item.item.id);
               }
+
+              console.log(user);
 
               return (
                 <Table.Row key={item.id}>

@@ -1,14 +1,26 @@
-import { Button, Dropdown, Table, Tooltip } from "flowbite-react";
+import {
+  Button,
+  Dropdown,
+  Modal,
+  Table,
+  TextInput,
+  Tooltip,
+} from "flowbite-react";
 import moment from "moment";
 import { HiPlusCircle } from "react-icons/hi";
 import { useSemStore } from "../zustand/store";
 import SemInput from "./semInput";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
 export function EquipmentTable({ data, isClient, isCart, setErrorEquipment }) {
   const filterData = data.filter((item) => item.category === "Equipment");
 
   const { setCartEquipment, cartEquipment } = useSemStore();
-
+  const [modalVisible, setModalVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [quantity, setQuantity] = useState(1);
   const handleAddCart = (item) => {
     const cartEquipmentCopy = [...cartEquipment];
     cartEquipmentCopy.push(item);
@@ -53,6 +65,37 @@ export function EquipmentTable({ data, isClient, isCart, setErrorEquipment }) {
       }
     });
     setCartEquipment(cartEquipmentCopy);
+  };
+
+  const handleQuantityChange = (e) => {
+    const value = sanitizeInput(e.target.value);
+    setQuantity(value);
+    setError(value > selectedItem.quantity);
+  };
+
+  const sanitizeInput = (value) => {
+    const sanitized = value.replace(/[^0-9]/g, ""); // Allow only numbers
+    return sanitized === "" ? "" : Math.max(1, parseInt(sanitized, 10));
+  };
+
+  const handleAddToCart = () => {
+    if (quantity > selectedItem.quantity) {
+      setErrorMessage(true);
+      toast.error("Request quantity exceeds the available stocks");
+      return;
+    }
+    const updatedCart = [...cartEquipment];
+    const itemToAdd = { ...selectedItem, borrowedQuantity: quantity };
+    updatedCart.push(itemToAdd);
+    setCartEquipment(updatedCart);
+    setErrorMessage(false);
+    setModalVisible(false);
+  };
+
+  const handleOpenModal = (item) => {
+    setSelectedItem(item);
+    setQuantity(1);
+    setModalVisible(true);
   };
 
   return (
@@ -121,7 +164,7 @@ export function EquipmentTable({ data, isClient, isCart, setErrorEquipment }) {
                   {isClient && (
                     <Table.Cell className="bg-white text-gray-800 font-bold">
                       <Button
-                        onClick={() => handleAddCart(item)}
+                        onClick={() => handleOpenModal(item)}
                         gradientMonochrome="success"
                       >
                         <HiPlusCircle color="gray" className="mr-2 h-5 w-5" />
@@ -186,6 +229,43 @@ export function EquipmentTable({ data, isClient, isCart, setErrorEquipment }) {
           </Table.Body>
         </Table>
       )}
+
+      <Modal show={modalVisible} onClose={() => setModalVisible(false)}>
+        <Modal.Header>
+          Add Item: {selectedItem?.description || "Item"}
+        </Modal.Header>
+        <Modal.Body>
+          <p>
+            Stock Available:{" "}
+            <span className="font-bold">{selectedItem?.quantity || 0}</span>
+          </p>
+          <p>Price: ₱{selectedItem?.price || 0}</p>
+          <TextInput
+            type="number"
+            value={quantity}
+            onChange={handleQuantityChange}
+            placeholder="Enter quantity"
+            min={1}
+            onKeyDown={(e) => {
+              // Prevent negative signs, e, and other invalid inputs
+              if (["e", "E", "-", "+", "."].includes(e.key)) {
+                e.preventDefault();
+              }
+            }}
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={handleAddToCart} gradientMonochrome="success">
+            Confirm
+          </Button>
+          <Button
+            onClick={() => setModalVisible(false)}
+            gradientMonochrome="failure"
+          >
+            Cancel
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }

@@ -59,7 +59,10 @@ export function UsersTable({ data }) {
           <Table.Body className="divide-y">
             {data.map((item) => {
               const firebaseDate = item?.createdAt;
-              const date = moment(firebaseDate?.toDate()).format("LLL");
+              const date =
+                firebaseDate && typeof firebaseDate.toDate === "function"
+                  ? moment(firebaseDate.toDate()).format("LLL")
+                  : "Invalid Date";
 
               return (
                 <Table.Row key={item.id}>
