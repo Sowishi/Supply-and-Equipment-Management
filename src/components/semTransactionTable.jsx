@@ -21,46 +21,31 @@ const SemTransactionTable = ({
   const { currentUser } = useSemStore();
   const { approveTransaction, rejectTransaction } = useUpdateTransaction();
   const { handleDecrementQuantity } = useCrudItems();
-  const isAdmin = currentUser?.role == "Admin";
+  const isAdmin = currentUser?.role === "Admin";
 
   const [qrModal, setQrModal] = useState(false);
-
   const [selected, setSelected] = useState();
 
-  const handleGetSupply = (id) => {
-    const output = supply.filter((item) => {
-      if (item.id == id) {
-        return item;
-      }
-    });
+  const handleGetSupply = (id) => supply.find((item) => item.id === id);
 
-    return output[0];
-  };
-
-  const handleGetEquipment = (id) => {
-    const output = equipment.filter((item) => {
-      if (item.id == id) {
-        return item;
-      }
-    });
-
-    return output[0];
-  };
+  const handleGetEquipment = (id) => equipment.find((item) => item.id === id);
 
   const getBadgeColor = (status) => {
-    if (status === "Pending") {
-      return "warning";
-    } else if (status === "Approve") {
-      return "green";
-    } else {
-      return "failure";
-    }
+    if (status === "Pending") return "warning";
+    if (status === "Approve") return "green";
+    return "failure";
   };
+
+  // Filter transactions by current user
+  const userTransactions = data?.filter((transaction) => {
+    const user = JSON.parse(transaction.currentUser);
+    return user?.email === currentUser?.email; // Adjust property to match unique identifier
+  });
 
   return (
     <div className="overflow-x-auto">
       <SemModal
-        title={"QR Code for Equipment"}
+        title="QR Code for Equipment"
         open={qrModal}
         handleClose={() => setQrModal(false)}
       >
@@ -72,7 +57,7 @@ const SemTransactionTable = ({
         />
       </SemModal>
 
-      {data && (
+      {userTransactions && (
         <Table>
           <Table.Head>
             <Table.HeadCell className="bg-white text-gray-900">
@@ -93,11 +78,9 @@ const SemTransactionTable = ({
             <Table.HeadCell className="bg-white text-gray-900">
               Status
             </Table.HeadCell>
-
             <Table.HeadCell className="bg-white text-gray-900">
               Form
             </Table.HeadCell>
-
             {isAdmin && (
               <Table.HeadCell className="bg-white text-gray-900">
                 Action
@@ -105,21 +88,15 @@ const SemTransactionTable = ({
             )}
           </Table.Head>
           <Table.Body className="divide-y">
-            {data?.map((item) => {
+            {userTransactions.map((item) => {
               const user = JSON.parse(item.currentUser);
-              const firebaseDate = item.createdAt;
-              const date = moment(firebaseDate?.toDate()).format("LLL");
+              const date = moment(item.createdAt?.toDate()).format("LLL");
               const badgeColor = getBadgeColor(item.status);
 
-              let finalItem = undefined;
-
-              if (item.item.category == "supply") {
-                finalItem = handleGetSupply(item.item.id);
-              } else {
-                finalItem = handleGetEquipment(item.item.id);
-              }
-
-              console.log(user);
+              const finalItem =
+                item.item.category === "supply"
+                  ? handleGetSupply(item.item.id)
+                  : handleGetEquipment(item.item.id);
 
               return (
                 <Table.Row key={item.id}>
@@ -139,11 +116,10 @@ const SemTransactionTable = ({
                     {date}
                   </Table.Cell>
                   <Table.Cell className="bg-white text-gray-900">
-                    <Badge color={badgeColor} size={"lg"}>
+                    <Badge color={badgeColor} size="lg">
                       {item.status}
                     </Badge>
                   </Table.Cell>
-
                   <Table.Cell className="bg-white text-gray-900">
                     <Dropdown
                       placement="left"
@@ -163,52 +139,31 @@ const SemTransactionTable = ({
                           View RIS Form
                         </Dropdown.Item>
                       </Tooltip>
-
                       <Tooltip
                         placement="left"
                         content={
                           item.status !== "Approve"
                             ? "Your document is not approved yet"
-                            : "You can now view your ICS form"
+                            : `You can now view your ${
+                                item.category === "Supply" ? "ICS" : "PAR"
+                              } form`
                         }
                       >
-                        {item.category == "Supply" && (
-                          <Dropdown.Item
-                            style={{
-                              cursor:
-                                item.status !== "Approve"
-                                  ? "not-allowed"
-                                  : "pointer",
-                            }}
-                            disabled={item.status !== "Approve"}
-                            onClick={() => {
-                              setCurrentTransaction(item);
-                              setIcsForm(true);
-                            }}
-                          >
-                            View ICS Form
-                          </Dropdown.Item>
-                        )}
-
-                        {item.category == "Equipment" && (
-                          <Dropdown.Item
-                            style={{
-                              cursor:
-                                item.status !== "Approve"
-                                  ? "not-allowed"
-                                  : "pointer",
-                            }}
-                            disabled={item.status !== "Approve"}
-                            onClick={() => {
-                              setCurrentTransaction(item);
-                              setParForm(true);
-                            }}
-                          >
-                            View PAR Form
-                          </Dropdown.Item>
-                        )}
+                        <Dropdown.Item
+                          disabled={item.status !== "Approve"}
+                          onClick={() => {
+                            setCurrentTransaction(item);
+                            item.category === "Supply"
+                              ? setIcsForm(true)
+                              : setParForm(true);
+                          }}
+                        >
+                          {item.category === "Supply"
+                            ? "View ICS Form"
+                            : "View PAR Form"}
+                        </Dropdown.Item>
                       </Tooltip>
-                      {item.category == "Equipment" && (
+                      {item.category === "Equipment" && (
                         <Dropdown.Item
                           onClick={() => {
                             setSelected(item.id);
@@ -222,28 +177,27 @@ const SemTransactionTable = ({
                   </Table.Cell>
                   {isAdmin && (
                     <Table.Cell className="bg-white text-gray-900">
-                      <div className="wrapper flex">
+                      <div className="flex">
                         <Button
                           disabled={
-                            item.status == "Approve" ||
+                            item.status === "Approve" ||
                             item.status === "Rejected"
                           }
                           onClick={() => {
                             handleDecrementQuantity(item);
                             approveTransaction(item.id, currentUser, item.item);
                           }}
-                          className="mr-2"
                           gradientMonochrome="success"
                         >
                           Approve
                         </Button>
                         <Button
+                          disabled={
+                            item.status === "Approve" ||
+                            item.status === "Rejected"
+                          }
                           onClick={() =>
                             rejectTransaction(item.id, currentUser)
-                          }
-                          disabled={
-                            item.status == "Approve" ||
-                            item.status === "Rejected"
                           }
                           gradientMonochrome="failure"
                         >
