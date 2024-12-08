@@ -10,6 +10,7 @@ import SemInput from "../components/semInput";
 import { Button } from "flowbite-react";
 import SemSelect from "../components/semSelect";
 import useCrudRequest from "../hooks/useCrudRequest";
+import suppliers from "../../suppliers";
 
 const PurchaseOrder = ({ cart }) => {
   //State
@@ -19,6 +20,7 @@ const PurchaseOrder = ({ cart }) => {
   const [deleteModal, setDeleteModal] = useState(false);
   const [cartSupply, setCartSupply] = useState([]);
   const [search, setSearch] = useState("");
+  const [supplierDetails, setSupplierDetails] = useState(null);
 
   const { handleAddRequest, data } = useCrudRequest();
   const [forms, setForms] = useState({
@@ -45,12 +47,27 @@ const PurchaseOrder = ({ cart }) => {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
+
+    if (name === "supplier") {
+      const selectedSupplier = suppliers.find(
+        (supplier) => supplier.companyName === value
+      );
+      setSupplierDetails(selectedSupplier);
+    }
+
     const output = { ...forms, [name]: value };
     setForms(output);
   };
 
   const handleSubmit = () => {
-    handleAddRequest(forms, cartSupply);
+    handleAddRequest(
+      {
+        ...forms,
+        supplierDetails,
+      },
+      cartSupply
+    );
+
     setSupplyModal(false);
     setCartSupply([]);
   };
@@ -84,11 +101,11 @@ const PurchaseOrder = ({ cart }) => {
               placeholder={"Please enter the PO Number"}
               label={"Purchase Order No."}
             />
-            <SemInput
+            <SemSelect
               event={handleChange}
-              name={"supplier"}
-              placeholder={"Please Enter the supplier"}
-              label={"Supplier"}
+              name="supplier"
+              label="Supplier"
+              data={suppliers.map((supplier) => supplier.companyName)} // Only company names
             />
             <SemSelect
               event={handleChange}

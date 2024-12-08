@@ -76,6 +76,7 @@ const useCrudRequest = () => {
         supplier: forms.supplier,
         category: forms.category,
         fundCluster: forms.fundCluster,
+        supplierDetails: forms.supplierDetails,
         items: cartSupply,
         status: "Pending",
         createdAt: serverTimestamp(),
