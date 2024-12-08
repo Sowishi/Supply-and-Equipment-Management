@@ -42,11 +42,9 @@ const ViewTransaction = () => {
 
           {/* Table Content */}
           <div className="p-4">
-            <div className="mb-2">
-              <span className="font-semibold text-[#9E1B21]">
-                Classification:
-              </span>
-              <span className="ml-2 text-gray-800">Equipment</span>
+            <div className="flex justify-between items-center border-t border-gray-300 py-2">
+              <span className="text-sm text-[#9E1B21]">Classication:</span>
+              <span className="text-sm text-gray-800">Equipment</span>
             </div>
 
             {transaction.item.map((item, index) => (
