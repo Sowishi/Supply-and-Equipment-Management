@@ -119,7 +119,7 @@ export function SupplyTable({ data, isClient, isCart, error, setError }) {
                           gradientMonochrome="success"
                         >
                           <HiPlusCircle className="mr-2 h-5 w-5" />
-                          ADD
+                          Request Item
                         </Button>
                       </Table.Cell>
                     )}

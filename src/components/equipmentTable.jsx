@@ -167,8 +167,8 @@ export function EquipmentTable({ data, isClient, isCart, setErrorEquipment }) {
                         onClick={() => handleOpenModal(item)}
                         gradientMonochrome="success"
                       >
-                        <HiPlusCircle color="gray" className="mr-2 h-5 w-5" />
-                        ADD
+                        <HiPlusCircle color="white" className="mr-2 h-5 w-5" />
+                        Request Item
                       </Button>
                     </Table.Cell>
                   )}
