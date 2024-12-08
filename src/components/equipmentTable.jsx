@@ -147,7 +147,7 @@ export function EquipmentTable({ data, isClient, isCart, setErrorEquipment }) {
                     {item.description}
                   </Table.Cell>
                   <Table.Cell className="bg-white text-gray-800 font-bold">
-                    ₱{item.price}
+                    ₱{parseInt(item.price).toLocaleString()}
                   </Table.Cell>
                   <Table.Cell className="bg-white text-gray-800 font-bold">
                     {item.unit}

@@ -101,7 +101,9 @@ export function SupplyTable({ data, isClient, isCart, error, setError }) {
                     <Table.Cell className="font-bold">
                       {item.description}
                     </Table.Cell>
-                    <Table.Cell className="font-bold">₱{item.price}</Table.Cell>
+                    <Table.Cell className="font-bold">
+                      ₱{parseInt(item.price).toLocaleString()}
+                    </Table.Cell>
                     <Table.Cell className="font-bold">{item.unit}</Table.Cell>
                     <Table.Cell className="font-bold">
                       {item.quantity}
