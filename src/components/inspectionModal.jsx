@@ -91,9 +91,9 @@ const InspectionModal = ({ title, size, open, handleClose, data }) => {
         <div className="border flex border-slate-950 text-center">
           <div className="basis-full border p-10 border-slate-950 ">
             <h1 className="font-bold mb-5 uppercase">Inspection</h1>
-            <h1>Juan Dela Cruz</h1>
+            <h1>Alma C. Furuc</h1>
             <h1 className="border-t-2 border-slate-950">
-              Inspection Officer / Inspection Committee
+              Inspection Officer / Administrative Aide IV
             </h1>
           </div>
           {/* <div className="basis-6/12 border p-10 border-slate-950 ">
