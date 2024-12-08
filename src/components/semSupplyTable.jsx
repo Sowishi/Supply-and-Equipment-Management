@@ -145,14 +145,16 @@ export function SemSupplyTable({ data }) {
                           View Inspection and Acceptance Report
                         </Dropdown.Item>
                       )}
-                      <Dropdown.Item
-                        onClick={() => {
-                          setConfirmDelete(true);
-                          setCurrentItem(item);
-                        }}
-                      >
-                        Delete Request
-                      </Dropdown.Item>
+                      {item.status !== "Completed" && (
+                        <Dropdown.Item
+                          onClick={() => {
+                            setConfirmDelete(true);
+                            setCurrentItem(item);
+                          }}
+                        >
+                          Delete Request
+                        </Dropdown.Item>
+                      )}
                     </Dropdown>
                   </Table.Cell>
                 </Table.Row>

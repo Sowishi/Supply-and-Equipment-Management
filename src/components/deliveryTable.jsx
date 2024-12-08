@@ -144,27 +144,31 @@ export function DeliveryTable({ data }) {
                       >
                         View Delivery Receipts
                       </Dropdown.Item>
-                      <Dropdown.Item
-                        onClick={() => {
-                          handleStatusChange(item, "Partial Delivered");
-                        }}
-                      >
-                        Update as Partial Delivered
-                      </Dropdown.Item>
-                      <Dropdown.Item
-                        onClick={() => {
-                          handleStatusChange(item, "Fully Delivered");
-                        }}
-                      >
-                        Update as Fully Delivered
-                      </Dropdown.Item>
-                      <Dropdown.Item
-                        onClick={() => {
-                          handleStatusChange(item, "Rejected");
-                        }}
-                      >
-                        Reject
-                      </Dropdown.Item>
+                      {item.status !== "Completed" && (
+                        <>
+                          <Dropdown.Item
+                            onClick={() => {
+                              handleStatusChange(item, "Partial Delivered");
+                            }}
+                          >
+                            Update as Partial Delivered
+                          </Dropdown.Item>
+                          <Dropdown.Item
+                            onClick={() => {
+                              handleStatusChange(item, "Fully Delivered");
+                            }}
+                          >
+                            Update as Fully Delivered
+                          </Dropdown.Item>
+                          <Dropdown.Item
+                            onClick={() => {
+                              handleStatusChange(item, "Rejected");
+                            }}
+                          >
+                            Reject
+                          </Dropdown.Item>
+                        </>
+                      )}
                     </Dropdown>
                   </Table.Cell>
                 </Table.Row>

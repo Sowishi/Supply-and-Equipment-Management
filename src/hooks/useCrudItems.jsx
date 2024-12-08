@@ -24,14 +24,26 @@ const useCrudItems = () => {
       setData(output);
     });
   }, []);
-  const handleAddItem = (item, data) => {
-    addDoc(colRef, {
-      ...item,
-      category: data.category,
-      supplier: data.supplier,
-      fundCluster: data.fundCluster,
-      createdAt: serverTimestamp(),
-    });
+  const handleAddItem = async (item, info) => {
+    const existingItem = data.find((d) => d.description == item.description);
+
+    if (existingItem) {
+      // Update the quantity of the existing item
+      const docRef = doc(db, "items", existingItem.docID);
+      const newQuantity =
+        parseInt(existingItem.quantity) + parseInt(item.quantity || 0);
+      await updateDoc(docRef, {
+        quantity: newQuantity,
+      });
+    } else {
+      await addDoc(colRef, {
+        ...item,
+        category: info.category,
+        supplier: info.supplier,
+        fundCluster: info.fundCluster,
+        createdAt: serverTimestamp(),
+      });
+    }
   };
 
   const handleDecrementQuantity = async (item) => {

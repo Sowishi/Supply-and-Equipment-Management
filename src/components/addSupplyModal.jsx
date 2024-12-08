@@ -21,7 +21,7 @@ const AddSupplyModal = ({
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    const output = { ...forms, [name]: value };
+    const output = { ...forms, [name]: value.toUpperCase() }; // Convert value to uppercase
     setForms(output);
   };
 
@@ -51,11 +51,26 @@ const AddSupplyModal = ({
         event={handleChange}
         name={"description"}
         label={"Description"}
+        value={forms.description}
       />
-      <SemInput event={handleChange} name={"unit"} label={"Unit"} />
-      <SemInput event={handleChange} name={"price"} label={"Price"} />
-
-      <SemInput event={handleChange} name={"quantity"} label={"Quantity"} />
+      <SemInput
+        event={handleChange}
+        name={"unit"}
+        label={"Unit"}
+        value={forms.unit}
+      />
+      <SemInput
+        event={handleChange}
+        name={"price"}
+        label={"Price"}
+        value={forms.price}
+      />
+      <SemInput
+        event={handleChange}
+        name={"quantity"}
+        label={"Quantity"}
+        value={forms.quantity}
+      />
       <Button
         onClick={handleSubmit}
         className="w-full mt-5"
