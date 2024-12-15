@@ -50,12 +50,7 @@ const RisFormModal = ({
           <div className="basis-4/12 border border-slate-950">
             <div className="flex flex-col ml-3">
               <h1>Responsibility Center Code: CNSC-COENG</h1>
-              <h1>
-                RIS No.:{" "}
-                {`${new Date().toISOString().slice(0, 10)}-${Math.floor(
-                  Math.random() * (100 - 1 + 1) + 1
-                )}`}
-              </h1>
+              <h1>RIS No.: _______________</h1>
             </div>
           </div>
         </div>

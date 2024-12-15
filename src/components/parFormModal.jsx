@@ -63,12 +63,7 @@ const ParFormModal = ({
               <h1>Fund Cluster: {data?.item[0]?.fundCluster || "--"}</h1>
             </div>
             <div className="flex flex-col">
-              <h1>
-                PAR No.:{" "}
-                {`${new Date().toISOString().slice(0, 10)}-${Math.floor(
-                  Math.random() * (100 - 1 + 1) + 1
-                )}`}
-              </h1>
+              <h1>PAR No.: ____________________</h1>
             </div>
           </div>
         </div>

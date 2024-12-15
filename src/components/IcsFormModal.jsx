@@ -54,15 +54,11 @@ const IcsFormModal = ({
     return <div>Loading...</div>; // Show loading state until user data is available
   }
 
-  if (!user) {
-    return <div>Error loading user data</div>; // Optionally, show an error if user data isn't found
-  }
-
   return (
     <SemModal title={title} size={size} open={open} handleClose={handleClose}>
       <div ref={targetRef} className="container mx-auto p-2">
         <h1 className="w-full flex justify-end items-center mb-10">
-          Appendix: 60
+          Appendix: Annex A.3
         </h1>
         <div className="wrapper mb-10">
           <h1 className="font-bold text-center text-2xl mb-10">
@@ -74,12 +70,7 @@ const IcsFormModal = ({
               <h1>Fund Cluster: {data?.item[0]?.fundCluster || "--"}</h1>
             </div>
             <div className="flex flex-col">
-              <h1>
-                ICS No.:{" "}
-                {`${new Date().toISOString().slice(0, 10)}-${Math.floor(
-                  Math.random() * (100 - 1 + 1) + 1
-                )}`}
-              </h1>
+              <h1>ICS No.: _______________</h1>
             </div>
           </div>
         </div>

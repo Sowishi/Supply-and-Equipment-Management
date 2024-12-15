@@ -70,7 +70,7 @@ const Login = () => {
           <div className="title-wrapper m-10">
             <SemTitle
               color={"white"}
-              title={"Supply And Equipment Management System"}
+              title={"Supply and Equipment Management System"}
             />
           </div>
           <form className="form-wrapper m-10" onSubmit={handleSubmitForm}>
