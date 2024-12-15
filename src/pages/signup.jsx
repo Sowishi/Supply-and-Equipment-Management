@@ -250,15 +250,11 @@ const Signup = () => {
               label={"User Type"}
               icon={HiUserGroup}
               id={"role"}
-              data={[
-                "Please select your role",
-                "Department Supply Coordinator",
-                "Admin",
-              ]}
+              data={["Please select your role", "Requestor", "Admin"]}
               event={handleUpdateForm}
               name="role"
             />
-            {forms.role === "Department Supply Coordinator" && (
+            {forms.role === "Requestor" && (
               <SemSelect
                 offices={true}
                 label={"Offices"}

@@ -1,28 +1,63 @@
-import { Button, Table, Tooltip, Modal } from "flowbite-react";
+import {
+  Button,
+  Table,
+  Tooltip,
+  Modal,
+  TextInput,
+  Label,
+} from "flowbite-react";
 import moment from "moment";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { useState } from "react";
 import useDeleteUser from "../hooks/useDeleteUser";
+import useUpdateUser from "../hooks/useUpdateUser"; // Import the update user hook
 
 export function UsersTable({ data }) {
   const { deleteUser } = useDeleteUser();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { updateUser } = useUpdateUser(); // Hook to update the user
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [updatedUser, setUpdatedUser] = useState({});
 
-  const openModal = (user) => {
+  const openDeleteModal = (user) => {
     setSelectedUser(user);
-    setIsModalOpen(true);
+    setIsDeleteModalOpen(true);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const closeDeleteModal = () => {
+    setIsDeleteModalOpen(false);
     setSelectedUser(null);
+  };
+
+  const openEditModal = (user) => {
+    setSelectedUser(user);
+    setUpdatedUser(user); // Pre-fill form with user data
+    setIsEditModalOpen(true);
+  };
+
+  const closeEditModal = () => {
+    setIsEditModalOpen(false);
+    setSelectedUser(null);
+    setUpdatedUser({});
   };
 
   const confirmDelete = () => {
     if (selectedUser) {
       deleteUser(selectedUser.id);
-      closeModal();
+      closeDeleteModal();
+    }
+  };
+
+  const handleUpdateChange = (e) => {
+    const { name, value } = e.target;
+    setUpdatedUser((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const confirmUpdate = () => {
+    if (updatedUser) {
+      updateUser(updatedUser.id, updatedUser);
+      closeEditModal();
     }
   };
 
@@ -48,9 +83,6 @@ export function UsersTable({ data }) {
             </Table.HeadCell>
             <Table.HeadCell className="bg-white text-gray-900">
               Created At
-            </Table.HeadCell>
-            <Table.HeadCell className="bg-white text-gray-900">
-              Password
             </Table.HeadCell>
             <Table.HeadCell className="bg-white text-gray-900">
               Action
@@ -89,12 +121,17 @@ export function UsersTable({ data }) {
                     {date}
                   </Table.Cell>
                   <Table.Cell className="bg-white text-gray-900">
-                    {item.password}
-                  </Table.Cell>
-                  <Table.Cell className="bg-white text-gray-900">
-                    <Button onClick={() => openModal(item)} color={"failure"}>
-                      Delete
-                    </Button>
+                    <div className="flex space-x-2">
+                      <Button onClick={() => openEditModal(item)} color="info">
+                        Edit
+                      </Button>
+                      <Button
+                        onClick={() => openDeleteModal(item)}
+                        color="failure"
+                      >
+                        Delete
+                      </Button>
+                    </div>
                   </Table.Cell>
                 </Table.Row>
               );
@@ -103,8 +140,8 @@ export function UsersTable({ data }) {
         </Table>
       )}
 
-      {/* Confirmation Modal */}
-      <Modal show={isModalOpen} onClose={closeModal}>
+      {/* Delete Confirmation Modal */}
+      <Modal show={isDeleteModalOpen} onClose={closeDeleteModal}>
         <Modal.Header>Confirm Deletion</Modal.Header>
         <Modal.Body>
           <div className="flex items-center">
@@ -122,7 +159,70 @@ export function UsersTable({ data }) {
           <Button color="failure" onClick={confirmDelete}>
             Yes, Delete
           </Button>
-          <Button color="gray" onClick={closeModal}>
+          <Button color="gray" onClick={closeDeleteModal}>
+            Cancel
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Edit User Modal */}
+      <Modal show={isEditModalOpen} onClose={closeEditModal}>
+        <Modal.Header>Edit User</Modal.Header>
+        <Modal.Body>
+          <form className="space-y-4">
+            <div>
+              <Label htmlFor="firstName" value="First Name" />
+              <TextInput
+                id="firstName"
+                name="firstName"
+                value={updatedUser.firstName || ""}
+                onChange={handleUpdateChange}
+              />
+            </div>
+            <div>
+              <Label htmlFor="lastName" value="Last Name" />
+              <TextInput
+                id="lastName"
+                name="lastName"
+                value={updatedUser.lastName || ""}
+                onChange={handleUpdateChange}
+              />
+            </div>
+            <div>
+              <Label htmlFor="email" value="Email" />
+              <TextInput
+                id="email"
+                name="email"
+                type="email"
+                value={updatedUser.email || ""}
+                onChange={handleUpdateChange}
+              />
+            </div>
+            <div>
+              <Label htmlFor="contact" value="Contact" />
+              <TextInput
+                id="contact"
+                name="contact"
+                value={updatedUser.contact || ""}
+                onChange={handleUpdateChange}
+              />
+            </div>
+            <div>
+              <Label htmlFor="role" value="Role" />
+              <TextInput
+                id="role"
+                name="role"
+                value={updatedUser.role || ""}
+                onChange={handleUpdateChange}
+              />
+            </div>
+          </form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button color="success" onClick={confirmUpdate}>
+            Save Changes
+          </Button>
+          <Button color="gray" onClick={closeEditModal}>
             Cancel
           </Button>
         </Modal.Footer>
