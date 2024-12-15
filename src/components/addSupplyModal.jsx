@@ -26,16 +26,25 @@ const AddSupplyModal = ({
   };
 
   const handleSubmit = () => {
-    // Validate if price and quantity are numbers
-    if (isNaN(forms.price) || isNaN(forms.quantity)) {
-      alert("Please enter a valid number for Price and Quantity.");
+    // Check for duplicate ID
+    if (cartSupply.some((item) => item.id === forms.id)) {
+      alert("This ID already exists. Please use a unique ID.");
       return;
     }
 
-    // Generate a random 4-digit number for ID
-    const randomId = Math.floor(1000 + Math.random() * 9000); // Ensures a 4-digit number
+    // Validate if id, price, and quantity are valid
+    if (!forms.id.trim()) {
+      alert("Please enter a valid ID.");
+      return;
+    }
+
+    if (isNaN(forms.price) || isNaN(forms.quantity)) {
+      alert("Please enter valid numbers for Price and Quantity.");
+      return;
+    }
+
     const cartSupplyCopy = [...cartSupply];
-    cartSupplyCopy.push({ ...forms, id: randomId.toString() }); // Add random ID to the form data
+    cartSupplyCopy.push(forms); // Add the form data directly
     setCartSupply(cartSupplyCopy);
     handleClose();
   };
@@ -47,6 +56,12 @@ const AddSupplyModal = ({
       open={open}
       handleClose={handleClose}
     >
+      <SemInput
+        event={handleChange}
+        name={"id"}
+        label={"ID"}
+        value={forms.id}
+      />
       <SemInput
         event={handleChange}
         name={"description"}
