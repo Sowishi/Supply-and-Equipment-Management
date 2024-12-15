@@ -70,7 +70,7 @@ const IcsFormModal = ({
               <h1>Fund Cluster: {data?.item[0]?.fundCluster || "--"}</h1>
             </div>
             <div className="flex flex-col">
-              <h1>ICS No.: _______________</h1>
+              <h1>ICS No.: ________</h1>
             </div>
           </div>
         </div>
@@ -109,10 +109,15 @@ const IcsFormModal = ({
               <h1>{item.unit}</h1>
             </div>
             <div className="basis-1/12 border border-slate-950 p-2 text-center">
-              <h1>{item.price}</h1>
+              <h1>₱{parseInt(item.price).toLocaleString()}</h1>
             </div>
             <div className="basis-1/12 border border-slate-950 p-2 text-center">
-              <h1>{item.borrowedQuantity * parseInt(item.price)}</h1>
+              <h1>
+                ₱{" "}
+                {parseInt(
+                  item.borrowedQuantity * parseInt(item.price)
+                ).toLocaleString()}
+              </h1>
             </div>
             <div className="basis-4/12 border border-slate-950 p-2 text-center">
               <h1>{item.description}</h1>

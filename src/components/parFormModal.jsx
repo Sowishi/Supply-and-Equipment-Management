@@ -108,7 +108,7 @@ const ParFormModal = ({
               <h1>{formattedDate}</h1>
             </div>
             <div className="basis-2/12 border border-slate-950 p-2 text-center">
-              <h1>₱{item.price}</h1>
+              <h1>₱{parseInt(item.price).toLocaleString()}</h1>
             </div>
           </div>
         ))}
