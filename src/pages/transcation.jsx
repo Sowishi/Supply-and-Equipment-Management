@@ -36,7 +36,7 @@ const Transaction = () => {
         size={"6xl"}
         open={risForm}
         handleClose={() => setRisForm(false)}
-        data={currentTransaction?.item}
+        data={currentTransaction}
       />
 
       <IcsFormModal

@@ -17,7 +17,7 @@ const useAddTransaction = () => {
     });
   };
 
-  const addSupplyTransaction = (supply, currentUser) => {
+  const addSupplyTransaction = (supply, currentUser, purpose) => {
     const colRef = collection(db, "transaction");
 
     addDoc(colRef, {
@@ -26,6 +26,7 @@ const useAddTransaction = () => {
       createdAt: serverTimestamp(),
       status: "Pending",
       category: "Supply",
+      purpose,
     });
   };
 
