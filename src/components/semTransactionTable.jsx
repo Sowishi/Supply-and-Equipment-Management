@@ -165,16 +165,17 @@ const SemTransactionTable = ({
                               : "View PAR Form"}
                           </Dropdown.Item>
                         </Tooltip>
-                        {item.category === "Equipment" && (
-                          <Dropdown.Item
-                            onClick={() => {
-                              setSelected(item.id);
-                              setQrModal(true);
-                            }}
-                          >
-                            View QR Code
-                          </Dropdown.Item>
-                        )}
+                        {item.category === "Equipment" &&
+                          item.status == "Approve" && (
+                            <Dropdown.Item
+                              onClick={() => {
+                                setSelected(item.id);
+                                setQrModal(true);
+                              }}
+                            >
+                              View QR Code
+                            </Dropdown.Item>
+                          )}
                       </Dropdown>
                     </Table.Cell>
                     {isAdmin && (
@@ -293,16 +294,17 @@ const SemTransactionTable = ({
                               : "View PAR Form"}
                           </Dropdown.Item>
                         </Tooltip>
-                        {item.category === "Equipment" && (
-                          <Dropdown.Item
-                            onClick={() => {
-                              setSelected(item.id);
-                              setQrModal(true);
-                            }}
-                          >
-                            View QR Code
-                          </Dropdown.Item>
-                        )}
+                        {item.category === "Equipment" &&
+                          item.status == "Approve" && (
+                            <Dropdown.Item
+                              onClick={() => {
+                                setSelected(item.id);
+                                setQrModal(true);
+                              }}
+                            >
+                              View QR Code
+                            </Dropdown.Item>
+                          )}
                       </Dropdown>
                     </Table.Cell>
                     {isAdmin && (
